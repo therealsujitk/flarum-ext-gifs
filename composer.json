@@ -1,0 +1,32 @@
+{
+  "name": "therealsujitk/flarum-ext-gifs",
+  "description": "Integrate your forum with GIF providers.",
+  "keywords": [
+    "flarum"
+  ],
+  "type": "flarum-extension",
+  "license": "MIT",
+  "require": {
+    "flarum/core": "^0.1.0-beta.8"
+  },
+  "authors": [],
+  "autoload": {
+    "psr-4": {
+      "Therealsujitk\\GIFs\\": "src/"
+    }
+  },
+  "extra": {
+    "flarum-extension": {
+      "title": "GIFs",
+      "icon": {
+        "image": "icon.svg",
+        "backgroundColor": "#ff9c59",
+        "backgroundSize": "cover",
+        "backgroundPosition": "center"
+      }
+    },
+    "flagrow": {
+      "discuss": ""
+    }
+  }
+}
