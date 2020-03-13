@@ -24,7 +24,7 @@ function getGiphyURL(textarea, giphyAPI) {
       document.getElementsByClassName('temp-text')[0].textContent = '';
 
       if(typeof content.data[0] === 'undefined') {
-        document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.noresults');
+        document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.noresults');;
       }
 
       imgL.src = content.data[i].images.downsized.url;
@@ -87,7 +87,7 @@ export default class SearchGIFModal extends Modal {
               document.getElementById('LeftResults').innerHTML = '';
               document.getElementById('RightResults').innerHTML = '';
               document.getElementById('LeftResults').scrollTop = 0;
-              document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');
+              document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');;
               document.getElementById('LoadMore').style.visibility = 'hidden';
               const textarea = this.props.textArea;
               const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');

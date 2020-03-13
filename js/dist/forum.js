@@ -156,7 +156,8 @@ function getGiphyURL(textarea, giphyAPI) {
       document.getElementsByClassName('temp-text')[0].textContent = '';
 
       if (typeof content.data[0] === 'undefined') {
-        document.getElementsByClassName('temp-text')[0].textContent = 'No Results';
+        document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.noresults');
+        ;
       }
 
       imgL.src = content.data[i].images.downsized.url;
@@ -234,7 +235,8 @@ function (_Modal) {
         document.getElementById('LeftResults').innerHTML = '';
         document.getElementById('RightResults').innerHTML = '';
         document.getElementById('LeftResults').scrollTop = 0;
-        document.getElementsByClassName('temp-text')[0].textContent = 'Loading...';
+        document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');
+        ;
         document.getElementById('LoadMore').style.visibility = 'hidden';
         var textarea = _this.props.textArea;
         var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
@@ -262,7 +264,7 @@ function (_Modal) {
       "class": 'Button-label',
       id: 'LoadMore'
     }, 'Load More')])]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
-      src: '../vendor/therealsujitk/flarum-ext-gifs/assets/powered_by_giphy.png'
+      src: 'https://i.ibb.co/NWvtzR1/powered-by-giphy.png'
     })]));
   };
 
