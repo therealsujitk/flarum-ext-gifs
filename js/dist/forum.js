@@ -264,7 +264,7 @@ function (_Modal) {
       "class": 'Button-label',
       id: 'LoadMore'
     }, 'Load More')])]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
-      src: 'https://i.ibb.co/NWvtzR1/powered-by-giphy.png'
+      src: '../assets/extensions/therealsujitk-gifs/powered_by_giphy.png'
     })]));
   };
 
