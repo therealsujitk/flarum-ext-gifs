@@ -218,6 +218,7 @@ function (_Modal) {
       id: 'GIFSearchBar',
       "class": 'FormControl',
       type: 'search',
+      autocomplete: 'off',
       placeholder: app.translator.trans('therealsujitk.forum.gifs.searchGiphy'),
       oninput: function oninput() {
         var textarea = _this.props.textArea;
@@ -230,7 +231,9 @@ function (_Modal) {
     }), m('td', {
       id: 'RightResults',
       width: '50%'
-    })])]));
+    })])]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
+      src: '../vendor/therealsujitk/flarum-ext-gifs/assets/powered_by_giphy.png'
+    })]));
   };
 
   return SearchGIFModal;
