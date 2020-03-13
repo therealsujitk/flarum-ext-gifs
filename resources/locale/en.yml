@@ -4,6 +4,8 @@ therealsujitk:
       label: 'Insert GIF'
       title: 'Select GIF'
       searchbar: 'Search Giphy'
+      loading: 'Loading...'
+      noresults: 'No Results'
   admin:
     gifs:
       title: 'GIF API Settings'
