@@ -3,7 +3,7 @@ import Button from 'flarum/components/Button';
 
 //const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy-api-key');
 //const giphyAPI = 'EaAoOgAPBLHeUOenh1Dx7GZ0qMMoO6M3';
-const giphyLimit = '10';
+const giphyLimit = '100';
 
 function getGiphyURL(textarea, giphyAPI) {
   let query = document.getElementById('GIFSearchBar').value;
