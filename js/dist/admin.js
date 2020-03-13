@@ -146,12 +146,19 @@ function (_SettingsModal) {
 
   var _proto = GIFsSettingsModal.prototype;
 
+  _proto.className = function className() {
+    return 'Modal--small';
+  };
+
   _proto.title = function title() {
-    return 'Hello World!';
+    return app.translator.trans('therealsujitk.admin.gifs.title');
   };
 
   _proto.form = function form() {
-    return [m('.Form-group', 'Hello World')];
+    return [m('div[class = Form-group]', [m('label', app.translator.trans('therealsujitk.admin.gifs.giphyAPIkey')), m('input', {
+      "class": 'FormControl',
+      bidi: this.setting('therealsujitk-gifs.giphy_api_key')
+    })])];
   };
 
   return GIFsSettingsModal;

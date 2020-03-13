@@ -136,9 +136,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_2__);
 
 
+ //const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy-api-key');
+//const giphyAPI = 'EaAoOgAPBLHeUOenh1Dx7GZ0qMMoO6M3';
 
-var giphyAPI = '';
-var giphyLimit = '200';
+var giphyLimit = '10';
+
+function getGiphyURL(textarea, giphyAPI) {
+  var query = document.getElementById('GIFSearchBar').value;
+  var url;
+  if (query != '') url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit;else url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;
+  console.log(url);
+  fetch(url).then(function (response) {
+    return response.json();
+  }).then(function (content) {
+    var resultsLeft = document.getElementById('LeftResults');
+    var resultsRight = document.getElementById('RightResults');
+    resultsLeft.innerHTML = '';
+    resultsRight.innerHTML = '';
+
+    var _loop = function _loop() {
+      if (query != document.getElementById('GIFSearchBar').value) getGiphyURL(textarea, giphyAPI);
+      var imgL = document.createElement('img');
+      var imgR = document.createElement('img');
+      imgL.src = content.data[i].images.downsized.url;
+      imgL.alt = content.data[i].title;
+      imgL.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0%; margin-right: 0.625%; vertical-align: top; cursor: pointer;';
+      resultsLeft.insertAdjacentElement("beforeend", imgL);
+
+      imgL.onclick = function () {
+        var embed = '![Giphy - ' + imgL.alt + ']' + '(' + imgL.src + ')';
+        app.modal.close();
+        textarea.insertAtCursor(embed);
+      };
+
+      imgR.src = content.data[i + 1].images.downsized.url;
+      imgR.alt = content.data[i + 1].title;
+      imgR.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0.625%; margin-right: 0%; vertical-align: top; cursor: pointer;';
+      resultsRight.insertAdjacentElement("beforeend", imgR);
+
+      imgR.onclick = function () {
+        var embed = '![Giphy - ' + imgR.alt + ']' + '(' + imgR.src + ')';
+        app.modal.close();
+        textarea.insertAtCursor(embed);
+      };
+    };
+
+    for (var i = 0; i < parseInt(giphyLimit, 10); i += 2) {
+      _loop();
+    }
+  });
+}
 
 var SearchGIFModal =
 /*#__PURE__*/
@@ -173,54 +220,11 @@ function (_Modal) {
       type: 'search',
       placeholder: app.translator.trans('therealsujitk.forum.gifs.searchGiphy'),
       oninput: function oninput() {
-        var query = document.getElementById('GIFSearchBar').value;
-        var url;
-        if (query == '') url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;else url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit;
-        fetch(url).then(function (response) {
-          return response.json();
-        }).then(function (content) {
-          var resultsLeft = document.getElementById('LeftResults');
-          var resultsRight = document.getElementById('RightResults');
-          resultsLeft.innerHTML = '';
-          resultsRight.innerHTML = '';
-
-          var _loop = function _loop() {
-            if (document.getElementById('GIFSearchBar').value != query) return "break";
-            var imgL = document.createElement('img');
-            var imgR = document.createElement('img');
-            imgL.src = content.data[i].images.downsized.url;
-            imgL.alt = content.data[i].title;
-            imgL.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0%; margin-right: 0.625%; vertical-align: top; cursor: pointer;';
-            resultsLeft.insertAdjacentElement("beforeend", imgL);
-
-            imgL.onclick = function () {
-              var embed = '![Giphy - ' + imgL.alt + ']' + '(' + imgL.src + ')';
-              app.modal.close();
-
-              _this.props.textArea.insertAtCursor(embed);
-            };
-
-            imgR.src = content.data[i + 1].images.downsized.url;
-            imgR.alt = content.data[i + 1].title;
-            imgR.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0.625%; margin-right: 0%; vertical-align: top; cursor: pointer;';
-            resultsRight.insertAdjacentElement("beforeend", imgR);
-
-            imgR.onclick = function () {
-              var embed = '![Giphy - ' + imgR.alt + ']' + '(' + imgR.src + ')';
-              app.modal.close();
-
-              _this.props.textArea.insertAtCursor(embed);
-            };
-          };
-
-          for (var i = 0; i < parseInt(giphyLimit, 10); i += 2) {
-            var _ret = _loop();
-
-            if (_ret === "break") break;
-          }
-        });
+        var textarea = _this.props.textArea;
+        var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+        getGiphyURL(textarea, giphyAPI);
       }
-    })])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; max-height: 50vh; overflow: auto;"]', [m('table', [m('td', {
+    })])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [m('table', [m('td', {
       id: 'LeftResults',
       width: '50%'
     }), m('td', {
