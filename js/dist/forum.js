@@ -137,20 +137,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var giphyLimit = '100';
+var giphyLimit = '40';
+var lastResult = 0;
 
 function getGiphyURL(textarea, giphyAPI) {
   var query = document.getElementById('GIFSearchBar').value.trim();
   var url;
-  if (query != '') url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit;else url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;
+  if (query != '') url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit + '&offset=' + lastResult.toString(10);else url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit + '&offset=' + lastResult.toString(10);
   fetch(url).then(function (response) {
     return response.json();
   }).then(function (content) {
     var resultsLeft = document.getElementById('LeftResults');
     var resultsRight = document.getElementById('RightResults');
-    resultsLeft.innerHTML = '';
-    resultsRight.innerHTML = '';
-    resultsLeft.scrollTop = 0;
 
     var _loop = function _loop() {
       var imgL = document.createElement('img');
@@ -184,9 +182,11 @@ function getGiphyURL(textarea, giphyAPI) {
       };
     };
 
-    for (var i = 0; i < parseInt(giphyLimit, 10); i += 2) {
+    for (var i = 0; i < parseInt(giphyLimit) + lastResult; i += 2) {
       _loop();
     }
+
+    document.getElementById('LoadMore').style.visibility = 'visible';
   });
 }
 
@@ -215,7 +215,7 @@ function (_Modal) {
     return m('.Modal-body[style]', m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
       id: 'flarum-loading',
       "class": 'temp-text'
-    }, 'Loading...'), m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
+    }), m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
       align: 'center',
       width: '100%'
     }, [m('td', [m('div[style = margin-right: 1.25%;]', {
@@ -230,25 +230,38 @@ function (_Modal) {
       className: 'Button Button--primary',
       children: 'Search',
       onclick: function onclick() {
+        lastResult = 0;
+        document.getElementById('LeftResults').innerHTML = '';
+        document.getElementById('RightResults').innerHTML = '';
+        document.getElementById('LeftResults').scrollTop = 0;
         document.getElementsByClassName('temp-text')[0].textContent = 'Loading...';
+        document.getElementById('LoadMore').style.visibility = 'hidden';
         var textarea = _this.props.textArea;
         var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
         getGiphyURL(textarea, giphyAPI);
       }
-    })])])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;"]', [m('table', {
-      width: '100%',
-      config: function config() {
-        var textarea = _this.props.textArea;
-        var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
-        getGiphyURL(textarea, giphyAPI);
-      }
+    })])])])]), m('div[style = margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;]', [m('table', {
+      width: '100%'
     }, [m('td', {
       id: 'LeftResults',
       width: '50%'
     }), m('td', {
       id: 'RightResults',
       width: '50%'
-    })])]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
+    })]), m('buttonspan[style = position: relative; left: 50%; transform: translate(-50%, 0%); margin-top: 10px; visibility: hidden;]', {
+      "class": 'Button',
+      type: 'Button',
+      title: 'Load More',
+      onclick: function onclick() {
+        lastResult += parseInt(giphyLimit);
+        var textarea = _this.props.textArea;
+        var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+        getGiphyURL(textarea, giphyAPI);
+      }
+    }, [m('span', {
+      "class": 'Button-label',
+      id: 'LoadMore'
+    }, 'Load More')])]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
       src: '../vendor/therealsujitk/flarum-ext-gifs/assets/powered_by_giphy.png'
     })]));
   };

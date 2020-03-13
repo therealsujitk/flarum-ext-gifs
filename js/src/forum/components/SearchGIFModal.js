@@ -1,25 +1,23 @@
 import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 
-const giphyLimit = '100';
+const giphyLimit = '40';
+
+var lastResult = 0;
 
 function getGiphyURL(textarea, giphyAPI) {
   let query = document.getElementById('GIFSearchBar').value.trim();
   let url;
   if(query != '')
-    url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query +'&limit=' + giphyLimit;
+    url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit + '&offset=' + lastResult.toString(10);
   else
-    url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;
+    url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit + '&offset=' + lastResult.toString(10);
 
   fetch(url).then(response => response.json()).then(content => {
     let resultsLeft = document.getElementById('LeftResults');
     let resultsRight = document.getElementById('RightResults');
-    resultsLeft.innerHTML = '';
-    resultsRight.innerHTML = '';
 
-    resultsLeft.scrollTop = 0;
-
-    for(var i=0; i<parseInt(giphyLimit, 10); i+=2) {
+    for(var i=0; i<parseInt(giphyLimit)+lastResult; i+=2) {
       let imgL = document.createElement('img');
       let imgR = document.createElement('img');
 
@@ -48,6 +46,7 @@ function getGiphyURL(textarea, giphyAPI) {
         textarea.insertAtCursor(embed);
       };
     }
+    document.getElementById('LoadMore').style.visibility = 'visible';
   });
 }
 
@@ -64,7 +63,7 @@ export default class SearchGIFModal extends Modal {
     return m('.Modal-body[style]', m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
       id: 'flarum-loading',
       class: 'temp-text'
-    }, 'Loading...'),
+    }),
     m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
       align: 'center',
       width: '100%'
@@ -84,21 +83,21 @@ export default class SearchGIFModal extends Modal {
             className: 'Button Button--primary',
             children: 'Search',
             onclick: () => {
+              lastResult = 0;
+              document.getElementById('LeftResults').innerHTML = '';
+              document.getElementById('RightResults').innerHTML = '';
+              document.getElementById('LeftResults').scrollTop = 0;
               document.getElementsByClassName('temp-text')[0].textContent = 'Loading...';
+              document.getElementById('LoadMore').style.visibility = 'hidden';
               const textarea = this.props.textArea;
               const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
 							getGiphyURL(textarea, giphyAPI);
             }
           })
         ])
-      ])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;"]', [
+      ])])]), m('div[style = margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;]', [
           m('table', {
-            width: '100%',
-            config: () => {
-              const textarea = this.props.textArea;
-              const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
-							getGiphyURL(textarea, giphyAPI);
-            }
+            width: '100%'
           }, [
             m('td', {
               id: 'LeftResults',
@@ -108,7 +107,18 @@ export default class SearchGIFModal extends Modal {
               id: 'RightResults',
               width: '50%'
             })
-          ])
+          ]),
+          m('buttonspan[style = position: relative; left: 50%; transform: translate(-50%, 0%); margin-top: 10px; visibility: hidden;]', {
+            class: 'Button',
+            type: 'Button',
+            title: 'Load More',
+            onclick: () => {
+              lastResult += parseInt(giphyLimit);
+              const textarea = this.props.textArea;
+              const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+							getGiphyURL(textarea, giphyAPI);
+            }
+          }, [m('span', {class: 'Button-label', id: 'LoadMore'}, 'Load More')])
         ]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
           src: '../vendor/therealsujitk/flarum-ext-gifs/assets/powered_by_giphy.png'
         })])
