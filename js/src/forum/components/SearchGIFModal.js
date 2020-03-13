@@ -23,6 +23,12 @@ function getGiphyURL(textarea, giphyAPI) {
       let imgL = document.createElement('img');
       let imgR = document.createElement('img');
 
+      document.getElementsByClassName('temp-text')[0].textContent = '';
+
+      if(typeof content.data[0] === 'undefined') {
+        document.getElementsByClassName('temp-text')[0].textContent = 'No Results';
+      }
+
       imgL.src = content.data[i].images.downsized.url;
       imgL.alt = content.data[i].title;
       imgL.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0%; margin-right: 0.3125%; vertical-align: top; cursor: pointer;';
@@ -55,7 +61,11 @@ export default class SearchGIFModal extends Modal {
   }
 
   content() {
-    return m('.Modal-body', m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
+    return m('.Modal-body[style]', m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
+      id: 'flarum-loading',
+      class: 'temp-text'
+    }, 'Loading...'),
+    m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
       align: 'center',
       width: '100%'
     },[
@@ -74,13 +84,14 @@ export default class SearchGIFModal extends Modal {
             className: 'Button Button--primary',
             children: 'Search',
             onclick: () => {
+              document.getElementsByClassName('temp-text')[0].textContent = 'Loading...';
               const textarea = this.props.textArea;
               const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
 							getGiphyURL(textarea, giphyAPI);
             }
           })
         ])
-      ])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [
+      ])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;"]', [
           m('table', {
             width: '100%',
             config: () => {
