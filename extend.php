@@ -10,6 +10,7 @@
  */
 
 namespace Therealsujitk\GIFs;
+use Illuminate\Contracts\Events\Dispatcher;
 
 use Flarum\Extend;
 
@@ -18,5 +19,8 @@ return [
         ->js(__DIR__.'/js/dist/forum.js'),
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js'),
-    new Extend\Locales(__DIR__ . '/resources/locale')
+    new Extend\Locales(__DIR__ . '/resources/locale'),
+    function (Dispatcher $dispatcher) {
+        $dispatcher->subscribe(Listeners\SaveSettings::class);
+    },
 ];
