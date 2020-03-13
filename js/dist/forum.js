@@ -140,7 +140,7 @@ __webpack_require__.r(__webpack_exports__);
 var giphyLimit = '100';
 
 function getGiphyURL(textarea, giphyAPI) {
-  var query = document.getElementById('GIFSearchBar').value;
+  var query = document.getElementById('GIFSearchBar').value.trim();
   var url;
   if (query != '') url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit;else url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;
   fetch(url).then(function (response) {
@@ -153,7 +153,6 @@ function getGiphyURL(textarea, giphyAPI) {
     resultsLeft.scrollTop = 0;
 
     var _loop = function _loop() {
-      if (query != document.getElementById('GIFSearchBar').value) getGiphyURL(textarea, giphyAPI);
       var imgL = document.createElement('img');
       var imgR = document.createElement('img');
       imgL.src = content.data[i].images.downsized.url;
@@ -227,7 +226,12 @@ function (_Modal) {
         getGiphyURL(textarea, giphyAPI);
       }
     })])])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [m('table', {
-      width: '100%'
+      width: '100%',
+      config: function config() {
+        var textarea = _this.props.textArea;
+        var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+        getGiphyURL(textarea, giphyAPI);
+      }
     }, [m('td', {
       id: 'LeftResults',
       width: '50%'

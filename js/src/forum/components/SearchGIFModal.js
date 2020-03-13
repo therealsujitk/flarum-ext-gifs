@@ -4,7 +4,7 @@ import Button from 'flarum/components/Button';
 const giphyLimit = '100';
 
 function getGiphyURL(textarea, giphyAPI) {
-  let query = document.getElementById('GIFSearchBar').value;
+  let query = document.getElementById('GIFSearchBar').value.trim();
   let url;
   if(query != '')
     url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query +'&limit=' + giphyLimit;
@@ -20,9 +20,6 @@ function getGiphyURL(textarea, giphyAPI) {
     resultsLeft.scrollTop = 0;
 
     for(var i=0; i<parseInt(giphyLimit, 10); i+=2) {
-      if(query != document.getElementById('GIFSearchBar').value)
-        getGiphyURL(textarea, giphyAPI);
-
       let imgL = document.createElement('img');
       let imgR = document.createElement('img');
 
@@ -85,7 +82,12 @@ export default class SearchGIFModal extends Modal {
         ])
       ])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [
           m('table', {
-            width: '100%'
+            width: '100%',
+            config: () => {
+              const textarea = this.props.textArea;
+              const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+							getGiphyURL(textarea, giphyAPI);
+            }
           }, [
             m('td', {
               id: 'LeftResults',
