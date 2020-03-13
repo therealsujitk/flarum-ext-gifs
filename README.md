@@ -1,6 +1,6 @@
 # GIFs
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/therealsujitk/flarum-ext-gifs.svg)](https://packagist.org/packages/therealsujitk/flarum-ext-gifs) ![Total Downloads](https://img.shields.io/packagist/dt/therealsujitk/flarum-ext-gifs.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Latest Stable Version](https://img.shields.io/packagist/v/therealsujitk/flarum-ext-gifs.svg) ![Total Downloads](https://img.shields.io/packagist/dt/therealsujitk/flarum-ext-gifs.svg)
 
 A [Flarum](http://flarum.org) extension that integrates your forum with GIF search engines.
 
