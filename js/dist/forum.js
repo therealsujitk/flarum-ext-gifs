@@ -136,8 +136,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_2__);
 
 
- //const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy-api-key');
-//const giphyAPI = 'EaAoOgAPBLHeUOenh1Dx7GZ0qMMoO6M3';
 
 var giphyLimit = '10';
 
@@ -145,7 +143,6 @@ function getGiphyURL(textarea, giphyAPI) {
   var query = document.getElementById('GIFSearchBar').value;
   var url;
   if (query != '') url = 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyAPI + '&q=' + query + '&limit=' + giphyLimit;else url = 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyAPI + '&limit=' + giphyLimit;
-  console.log(url);
   fetch(url).then(function (response) {
     return response.json();
   }).then(function (content) {
@@ -160,7 +157,7 @@ function getGiphyURL(textarea, giphyAPI) {
       var imgR = document.createElement('img');
       imgL.src = content.data[i].images.downsized.url;
       imgL.alt = content.data[i].title;
-      imgL.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0%; margin-right: 0.625%; vertical-align: top; cursor: pointer;';
+      imgL.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0%; margin-right: 0.3125%; vertical-align: top; cursor: pointer;';
       resultsLeft.insertAdjacentElement("beforeend", imgL);
 
       imgL.onclick = function () {
@@ -171,7 +168,7 @@ function getGiphyURL(textarea, giphyAPI) {
 
       imgR.src = content.data[i + 1].images.downsized.url;
       imgR.alt = content.data[i + 1].title;
-      imgR.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0.625%; margin-right: 0%; vertical-align: top; cursor: pointer;';
+      imgR.style = 'min-width: 97.5%; width: 97.5%; border-radius: 5px; margin: 1.25%; margin-left: 0.3125%; margin-right: 0%; vertical-align: top; cursor: pointer;';
       resultsRight.insertAdjacentElement("beforeend", imgR);
 
       imgR.onclick = function () {
@@ -209,23 +206,28 @@ function (_Modal) {
   _proto.content = function content() {
     var _this = this;
 
-    return m('.Modal-body', m('div', {
-      "class": 'Search',
-      align: 'center'
-    }, [m('div', {
+    return m('.Modal-body', m('div', [m('table[style = vertical-align: top; horizontal-align: right;]', {
+      align: 'center',
+      width: '100%'
+    }, [m('td', [m('div[style = margin-right: 1.25%;]', {
       "class": 'Search-input'
     }, [m('input[style = width: 100%;]', {
       id: 'GIFSearchBar',
       "class": 'FormControl',
       type: 'search',
       autocomplete: 'off',
-      placeholder: app.translator.trans('therealsujitk.forum.gifs.searchGiphy'),
-      oninput: function oninput() {
+      placeholder: app.translator.trans('therealsujitk.forum.gifs.searchbar')
+    })])]), m('td[style = width: 0px;]', [m('.Form-group[style = margin-left: 1.25%;]', [flarum_components_Button__WEBPACK_IMPORTED_MODULE_2___default.a.component({
+      className: 'Button Button--primary',
+      children: 'Search',
+      onclick: function onclick() {
         var textarea = _this.props.textArea;
         var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
         getGiphyURL(textarea, giphyAPI);
       }
-    })])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [m('table', [m('td', {
+    })])])])]), m('div[style = "margin-top: 10px; margin-bottom: 10px; min-height: 40vh; height: 40vh; overflow: auto;"]', [m('table', {
+      width: '100%'
+    }, [m('td', {
       id: 'LeftResults',
       width: '50%'
     }), m('td', {
