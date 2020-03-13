@@ -1,7 +1,7 @@
 import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 
-const giphyLimit = '10';
+const giphyLimit = '100';
 
 function getGiphyURL(textarea, giphyAPI) {
   let query = document.getElementById('GIFSearchBar').value;
@@ -16,6 +16,8 @@ function getGiphyURL(textarea, giphyAPI) {
     let resultsRight = document.getElementById('RightResults');
     resultsLeft.innerHTML = '';
     resultsRight.innerHTML = '';
+
+    resultsLeft.scrollTop = 0;
 
     for(var i=0; i<parseInt(giphyLimit, 10); i+=2) {
       if(query != document.getElementById('GIFSearchBar').value)

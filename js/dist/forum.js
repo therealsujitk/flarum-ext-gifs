@@ -137,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var giphyLimit = '10';
+var giphyLimit = '100';
 
 function getGiphyURL(textarea, giphyAPI) {
   var query = document.getElementById('GIFSearchBar').value;
@@ -150,6 +150,7 @@ function getGiphyURL(textarea, giphyAPI) {
     var resultsRight = document.getElementById('RightResults');
     resultsLeft.innerHTML = '';
     resultsRight.innerHTML = '';
+    resultsLeft.scrollTop = 0;
 
     var _loop = function _loop() {
       if (query != document.getElementById('GIFSearchBar').value) getGiphyURL(textarea, giphyAPI);
