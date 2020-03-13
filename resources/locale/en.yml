@@ -1,9 +1,10 @@
+
 therealsujitk:
   forum:
     gifs:
       label: 'Insert GIF'
       title: 'Select GIF'
-      searchbar: 'Search Giphy'
+      searchbar: 'Search GIFs'
       loading: 'Loading...'
       noresults: 'No Results'
   admin:
