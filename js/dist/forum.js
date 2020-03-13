@@ -305,7 +305,7 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('therealsujit
     items.add('therealsujitk-gifs', m('button', {
       type: 'buton',
       "class": 'Button Button--icon Button--link hasIcon',
-      title: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans('therealsujitk.forum.gif.title'),
+      title: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans('therealsujitk.forum.gifs.title'),
       onclick: function onclick() {
         flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.modal.show(new _components_SearchGIFModal__WEBPACK_IMPORTED_MODULE_4__["default"]({
           textArea: _this

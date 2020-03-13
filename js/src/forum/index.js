@@ -9,7 +9,7 @@ app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
         items.add('therealsujitk-gifs', m('button', {
 					type: 'buton',
 					class: 'Button Button--icon Button--link hasIcon',
-					title: app.translator.trans('therealsujitk.forum.gif.title'),
+					title: app.translator.trans('therealsujitk.forum.gifs.title'),
 					onclick: () => {
 						app.modal.show(new SearchGIFModal({
 							textArea: this
