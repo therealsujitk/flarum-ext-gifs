@@ -81,13 +81,13 @@ export default class SearchGIFModal extends Modal {
         m('.Form-group[style = margin-left: 1.25%;]', [
           Button.component({
             className: 'Button Button--primary',
-            children: 'Search',
+            children: app.translator.trans('therealsujitk.forum.gifs.search'),
             onclick: () => {
               lastResult = 0;
               document.getElementById('LeftResults').innerHTML = '';
               document.getElementById('RightResults').innerHTML = '';
               document.getElementById('LeftResults').scrollTop = 0;
-              document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');;
+              document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');
               document.getElementById('LoadMore').style.visibility = 'hidden';
               const textarea = this.props.textArea;
               const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
@@ -120,7 +120,7 @@ export default class SearchGIFModal extends Modal {
             }
           }, [m('span', {class: 'Button-label', id: 'LoadMore'}, 'Load More')])
         ]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
-          src: '../assets/extensions/therealsujitk-gifs/powered_by_giphy.png'
+          src: '../../assets/extensions/therealsujitk-gifs/powered_by_giphy.png'
         })])
     );
   }
