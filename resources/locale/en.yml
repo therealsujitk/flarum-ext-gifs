@@ -3,7 +3,7 @@ therealsujitk:
     gifs:
       label: 'Insert GIF'
       title: 'Select GIF'
-      searchGiphy: 'Search Giphy'
+      searchbar: 'Search Giphy'
   admin:
     gifs:
       title: 'GIF API Settings'
