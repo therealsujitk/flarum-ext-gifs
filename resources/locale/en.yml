@@ -7,6 +7,7 @@ therealsujitk:
       search: 'Search'
       loading: 'Loading...'
       noresults: 'No Results'
+      loadmore: 'Load More'
   admin:
     gifs:
       title: 'GIF API Settings'
