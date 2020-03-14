@@ -16,8 +16,13 @@ export default class GIFsSettingsModal extends SettingsModal {
 					m('input', {
 						class: 'FormControl',
 						bidi: this.setting('therealsujitk-gifs.giphy_api_key')
-					})
+					}),
+					m('hr'), m('div', [
+						m('p[style = display: inline;]', app.translator.trans('therealsujitk.admin.about.stringA')), m('a', { href: 'https://github.com/therealsujitk', target: '_blank' }, '@therealsujitk'), 
+						m('br'),
+						m('p[style = display: inline;]', app.translator.trans('therealsujitk.admin.about.stringB')), m('a', { href: 'https://paypal.me/suchitrakumar', target: '_blank' }, 'PayPal')
+					])
 				])
-    ];
+    	];
 	}
 }

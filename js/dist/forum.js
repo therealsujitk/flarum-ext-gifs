@@ -228,7 +228,17 @@ function (_Modal) {
   _proto.content = function content() {
     var _this = this;
 
-    return m('.Modal-body[style]', m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
+    return m('.Modal-body', {
+      config: function config(content, isInitialized) {
+        if (!isInitialized) {
+          document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');
+          var textarea = _this.props.textArea;
+          var giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+          query = document.getElementById('GIFSearchBar').value.trim();
+          getGiphyURL(textarea, giphyAPI);
+        }
+      }
+    }, m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
       id: 'flarum-loading',
       "class": 'temp-text'
     }), m('div', [m('table[style = vertical-align: top; width: 100%;]', [m('td', [m('form[style = margin-right: 1.25%;]', {
@@ -323,8 +333,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_extend__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/app */ "flarum/app");
 /* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_app__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/components/Button */ "flarum/components/Button");
-/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/Component */ "flarum/Component");
+/* harmony import */ var flarum_Component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_Component__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var flarum_components_TextEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/components/TextEditor */ "flarum/components/TextEditor");
 /* harmony import */ var flarum_components_TextEditor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_components_TextEditor__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _components_SearchGIFModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SearchGIFModal */ "./src/forum/components/SearchGIFModal.js");
@@ -346,13 +356,38 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('therealsujit
           textArea: _this
         }));
       }
-    }, [m('i', {
-      "class": 'fas fa-photo-video'
-    }), m('span', {
+    }, [m('svg', {
+      "class": 'fas fa-this-icon-does-not-exist',
+      xmlns: 'http://www.w3.org/2000/svg',
+      xlink: 'http://www.w3.org/1999/xlink',
+      width: '16pt',
+      height: '7pt',
+      viewBox: '0 0 16 7',
+      version: '1.1'
+    }, [m('g', {
+      id: 'surface1'
+    }, [m('path[fill = currentColor]', {
+      d: 'M 0.78125 7.042969 C 0.496094 6.933594 0.265625 6.738281 0.132812 6.480469 L 0 6.234375 L 0 0.875 L 0.132812 0.625 C 0.277344 0.355469 0.558594 0.128906 0.847656 0.0429688 C 0.957031 0.015625 1.71875 0 2.917969 0.0078125 L 4.808594 0.0234375 L 5.050781 0.15625 C 5.21875 0.246094 5.332031 0.355469 5.425781 0.511719 C 5.597656 0.800781 5.648438 0.992188 5.648438 1.410156 L 5.648438 1.753906 L 1.65625 1.753906 L 1.65625 5.355469 L 3.96875 5.355469 L 3.96875 3.554688 L 5.648438 3.554688 L 5.648438 4.800781 C 5.648438 5.484375 5.628906 6.117188 5.605469 6.207031 C 5.523438 6.527344 5.308594 6.808594 5.050781 6.953125 L 4.808594 7.085938 L 2.878906 7.09375 C 1.339844 7.105469 0.917969 7.09375 0.78125 7.042969 Z M 0.78125 7.042969 '
+    }), m('path[fill = currentColor]', {
+      d: 'M 7.371094 3.554688 L 7.371094 0 L 9.050781 0 L 9.050781 7.109375 L 7.371094 7.109375 Z M 7.371094 3.554688 '
+    }), m('path[fill = currentColor]', {
+      d: 'M 10.773438 3.554688 L 10.773438 0 L 15.855469 0 L 15.855469 1.753906 L 12.453125 1.753906 L 12.453125 2.988281 L 14.722656 2.988281 L 14.722656 4.742188 L 12.453125 4.742188 L 12.453125 7.109375 L 10.773438 7.109375 Z M 10.773438 3.554688 '
+    })])]), m('span', {
       "class": 'Button-label'
     }, flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans('therealsujitk.forum.gifs.label'))]), 10);
   });
 });
+
+/***/ }),
+
+/***/ "flarum/Component":
+/*!**************************************************!*\
+  !*** external "flarum.core.compat['Component']" ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['Component'];
 
 /***/ }),
 
@@ -364,17 +399,6 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('therealsujit
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['app'];
-
-/***/ }),
-
-/***/ "flarum/components/Button":
-/*!**********************************************************!*\
-  !*** external "flarum.core.compat['components/Button']" ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = flarum.core.compat['components/Button'];
 
 /***/ }),
 

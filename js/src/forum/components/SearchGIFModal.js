@@ -74,7 +74,17 @@ export default class SearchGIFModal extends Modal {
   }
 
   content() {
-    return m('.Modal-body[style]', m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
+    return m('.Modal-body', {
+      config: (content, isInitialized) => {
+        if(!isInitialized) {
+          document.getElementsByClassName('temp-text')[0].textContent = app.translator.trans('therealsujitk.forum.gifs.loading');
+          const textarea = this.props.textArea;
+          const giphyAPI = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
+          query = document.getElementById('GIFSearchBar').value.trim();
+          getGiphyURL(textarea, giphyAPI);
+        }
+      }
+    }, m('span[style = position: absolute; left: 50%; top: 200px; transform: translate(-50%, -50%);]', {
       id: 'flarum-loading',
       class: 'temp-text'
     }),
@@ -125,7 +135,10 @@ export default class SearchGIFModal extends Modal {
           }
         }, [m('span', { class: 'Button-label' }, app.translator.trans('therealsujitk.forum.gifs.search'))])
       ])])]), m('div[style = margin-top: 10px; margin-bottom: 10px; min-height: 45vh; height: 45vh; overflow: auto;]', [
-          m('table', { width: '100%' }, [
+          m('table', {
+            width: '100%',
+
+          }, [
             m('td', {
               id: 'LeftResults',
               width: '50%'
