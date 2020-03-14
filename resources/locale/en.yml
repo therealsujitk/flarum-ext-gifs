@@ -12,3 +12,6 @@ therealsujitk:
     gifs:
       title: 'GIF API Settings'
       giphyAPIkey: 'Giphy API Key'
+    about:
+      stringA: 'Extension built by '
+      stringB: 'Donate to me on '
