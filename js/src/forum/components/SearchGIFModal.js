@@ -120,7 +120,7 @@ export default class SearchGIFModal extends Modal {
             }
           }, [m('span', {class: 'Button-label', id: 'LoadMore'}, 'Load More')])
         ]), m('div[style = padding-top: 10px; padding-bottom: 30px;]', [m('img[style = float: right;]', {
-          src: '../../assets/extensions/therealsujitk-gifs/powered_by_giphy.png'
+          src: app.forum.attribute('baseUrl') + '/assets/extensions/therealsujitk-gifs/powered_by_giphy.png'
         })])
     );
   }
