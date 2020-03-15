@@ -6,17 +6,17 @@ import SearchGIFModal from './components/SearchGIFModal';
 
 app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
 	extend(TextEditor.prototype, 'toolbarItems', function (items) {
-    items.add('therealsujitk-gifs',
+		items.add('therealsujitk-gifs',
 			m('button', {
-					type: 'buton',
-					class: 'Button Button--icon Button--link hasIcon',
-					title: app.translator.trans('therealsujitk.forum.gifs.title'),
-					onclick: () => {
-						app.modal.show(new SearchGIFModal({
-							textArea: this
-						}));
-					}
-				}, [
+				type: 'buton',
+				class: 'Button Button--icon Button--link hasIcon',
+				title: app.translator.trans('therealsujitk.forum.gifs.label'),
+				onclick: () => {
+					app.modal.show(new SearchGIFModal({
+						textArea: this
+					}));
+				}
+			}, [
 				m('svg', {
 					class: 'fas fa-this-icon-does-not-exist',
 					xmlns: 'http://www.w3.org/2000/svg',
@@ -41,5 +41,5 @@ app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
 				m('span', { class: 'Button-label' }, app.translator.trans('therealsujitk.forum.gifs.label'))
 			]),
 		10);
-  });
+	});
 });
