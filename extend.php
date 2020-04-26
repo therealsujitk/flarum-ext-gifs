@@ -10,9 +10,10 @@
  */
 
 namespace Therealsujitk\GIFs;
-use Illuminate\Contracts\Events\Dispatcher;
 
+use Flarum\Api\Event\Serializing;
 use Flarum\Extend;
+use Illuminate\Contracts\Events\Dispatcher;
 
 return [
     (new Extend\Frontend('forum'))
@@ -21,6 +22,6 @@ return [
         ->js(__DIR__.'/js/dist/admin.js'),
     new Extend\Locales(__DIR__ . '/resources/locale'),
     function (Dispatcher $dispatcher) {
-        $dispatcher->subscribe(Listeners\SaveSettings::class);
+        $dispatcher->listen(Serializing::class, Listeners\SaveSettings::class);
     },
 ];
