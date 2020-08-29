@@ -35,6 +35,6 @@ composer update therealsujitk/flarum-ext-gifs
 
 - [Packagist](https://packagist.org/packages/therealsujitk/flarum-ext-gifs)
 - [Discussion Page](https://discuss.flarum.org/d/23101)
-- [Github](https://github.com/therealsujitk/flarum-ext-gifs)
-- [Donate on PayPal](https://paypal.me/suchitrakumar)
+- [Github](https://therealsuji.tk/extensions/flarum-ext-gifs)
+- [Donate on PayPal](https://therealsuji.tk/donate)
 
