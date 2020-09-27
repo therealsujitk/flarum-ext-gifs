@@ -6,7 +6,7 @@ A [Flarum](http://flarum.org) extension that integrates your forum with GIF sear
 
 ### Preview
 
-![Preview](https://i.imgur.com/HdhAWeo.png)
+![Preview](https://i.imgur.com/kHJZAPC.gif)
 
 ### Available GIF search engines
 
@@ -37,4 +37,3 @@ composer update therealsujitk/flarum-ext-gifs
 - [Discussion Page](https://discuss.flarum.org/d/23101)
 - [Github](https://therealsuji.tk/extensions/flarum-ext-gifs)
 - [Donate on PayPal](https://therealsuji.tk/donate)
-

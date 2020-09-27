@@ -89,12 +89,12 @@ export default class SearchGIFModal extends Modal {
 				class: 'temp-text'
 			}),
 			m('div', [m('table[style = vertical-align: top; width: 100%;]',[
-			m('td', [
+			m('td[style = width: 100%;]', [
 				m('form[style = margin-right: 1.25%;]', {
 					class: 'Search-input',
 					onsubmit: () => { return false; },
-					onkeyup: () => {
-						if(event.keyCode === 13) {
+					onkeyup: (e) => {
+						if(e.keyCode === 13) {
 							lastResult = 0;
 							document.getElementById('LeftResults').innerHTML = '';
 							document.getElementById('RightResults').innerHTML = '';
@@ -118,7 +118,7 @@ export default class SearchGIFModal extends Modal {
 				])
 			]),
 			m('td', [
-				m('button[style = margin-left: 1.25%; width: 100%;]', {
+				m('button[style = margin-left: 1.25%;]', {
 					class: 'Button Button--primary hasIcon',
 					itemclassname: 'App-primaryControl',
 					type: 'button',
