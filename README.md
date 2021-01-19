@@ -19,7 +19,7 @@ A [Flarum](http://flarum.org) extension that integrates your forum with GIF sear
 
 ### Installation
 
-Use [Bazaar](https://discuss.flarum.org/d/5151-flagrow-bazaar-the-extension-marketplace) or install manually with composer:
+Install with composer:
 
 ```sh
 composer require therealsujitk/flarum-ext-gifs
@@ -35,5 +35,4 @@ composer update therealsujitk/flarum-ext-gifs
 
 - [Packagist](https://packagist.org/packages/therealsujitk/flarum-ext-gifs)
 - [Discussion Page](https://discuss.flarum.org/d/23101)
-- [Github](https://therealsuji.tk/extensions/flarum-ext-gifs)
-- [Donate on PayPal](https://therealsuji.tk/donate)
+- [Github](https://github.com/therealsujitk/flarum-ext-gifs)
