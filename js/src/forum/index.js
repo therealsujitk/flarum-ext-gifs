@@ -1,6 +1,6 @@
-import { extend } from 'flarum/extend';
-import app from 'flarum/app';
-import TextEditor from 'flarum/components/TextEditor';
+import { extend } from 'flarum/common/extend';
+import app from 'flarum/common/app';
+import TextEditor from 'flarum/common/components/TextEditor';
 import SearchGIFModal from './components/SearchGIFModal';
 
 app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
