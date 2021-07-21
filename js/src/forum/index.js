@@ -1,25 +1,25 @@
 import { extend } from 'flarum/common/extend';
 import app from 'flarum/common/app';
 import TextEditor from 'flarum/common/components/TextEditor';
+import TextEditorButton from 'flarum/common/components/TextEditorButton';
 import SearchGIFModal from './components/SearchGIFModal';
 
 app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
     extend(TextEditor.prototype, 'toolbarItems', function (items) {
         items.add(
-            'therealsujitk-gifs',
-            m(
-                'button',
+            'my-item',
+            TextEditorButton.component(
                 {
-                    type: 'buton',
-                    class: 'Button Button--icon Button--link hasIcon',
+                    id: 'therealsujitk-gifs-toolbar-item',
                     title: app.translator.trans('therealsujitk.forum.gifs.label'),
+                    className: 'Button Button--icon Button--link hasIcon',
                     onclick: () => app.modal.show(SearchGIFModal, { textArea: this.attrs.composer.editor })
                 },
                 [
                     m(
                         'svg',
                         {
-                            class: 'fas fa-this-icon-does-not-exist',
+                            id: 'therealsujitk-gifs-toolbar-item',
                             xmlns: 'http://www.w3.org/2000/svg',
                             xlink: 'http://www.w3.org/1999/xlink',
                             width: '16pt',
@@ -40,11 +40,9 @@ app.initializers.add('therealsujitk/flarum-ext-gifs', () => {
                                 })
                             ])
                         ]
-                    ),
-                    m('span', { class: 'Button-label' }, app.translator.trans('therealsujitk.forum.gifs.label'))
+                    )
                 ]
-            ),
-            10
+            )
         );
     });
 });
