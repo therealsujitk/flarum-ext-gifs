@@ -3,11 +3,9 @@ therealsujitk:
       gifs:
         label: 'Insert GIF'
         title: 'Select GIF'
-        searchbar: 'Search GIFs'
+        searchGiphy: 'Search Giphy'
         search: 'Search'
-        loading: 'Loading...'
-        noresults: 'No Results'
-        loadmore: 'Load More'
+        end: "You've reached the end"
     admin:
       gifs:
         giphyAPIkey: 'Giphy API Key'
