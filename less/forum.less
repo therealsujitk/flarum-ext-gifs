@@ -2,21 +2,23 @@
     display: inline-block;
 }
 
-#therealsujitk-gifs-search {
-    display: flex;
+#therealsujitk-gifs-title {
+    margin: auto 0px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-#therealsujitk-gifs-search .Search-input {
+#therealsujitk-gifs-back-button {
+    margin-right: 10px;
+}
+
+#therealsujitk-gifs-search-input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+#therealsujitk-gifs-search-input input {
     width: 100%;
-    margin-right: 5px;
-}
-
-#therealsujitk-gifs-search input {
-    width: 100%;
-}
-
-#therealsujitk-gifs-search button {
-    margin-left: 5px;
 }
 
 #therealsujitk-gifs-container {
@@ -27,45 +29,75 @@
     overflow: auto;
 }
 
-#therealsujitk-gifs-container .therealsujitk-gifs-column {
+#therealsujitk-gifs-container .therealsujitk-gifs-gif-column,
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column {
     width: 50%;
     float: left;
-    padding: 0px 3px;
 }
 
-#therealsujitk-gifs-container .therealsujitk-gifs-column:first-child {
-    padding: 0px 3px 0px 0px;
-}
-
-#therealsujitk-gifs-container .therealsujitk-gifs-column:last-child {
-    padding: 0px 0px 0px 3px;
-}
-
-#therealsujitk-gifs-container .therealsujitk-gifs-column img {
+#therealsujitk-gifs-container .therealsujitk-gifs-gif-column img,
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column div {
     display: block;
-    width: 100%;
-    margin-bottom: 6px;
+    width: calc(~"100% - 5px");
+    margin: 5px 2.5px;
     padding: 1px;
     border: 2px solid rgba(0, 0, 0, 0);
     border-radius: 7px;
     cursor: pointer;
-    transition: border 0.3s;
+    transition: border 0.3s, background-color 0.3s;
+    animation: fadeIn 0.3s;
 }
 
-#therealsujitk-gifs-container .therealsujitk-gifs-column img:last-child {
-    margin: 0px;
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column div {
+    display: inline-block;
+    height: 125px;
+    width: calc(~"100% - 9px");
+    margin: 4.5px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px #000000;
+    text-align: center;
+    line-height: 125px;
+    vertical-align: middle;
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-origin: content-box;
+    background-color: fade(@primary-color, 40%);
+    background-blend-mode: luminosity;
 }
 
-#therealsujitk-gifs-container .therealsujitk-gifs-column img:hover {
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#therealsujitk-gifs-container .therealsujitk-gifs-gif-column img:first-child,
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column div:first-child {
+    margin-top: 0px;
+}
+
+#therealsujitk-gifs-container .therealsujitk-gifs-gif-column img:last-child,
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column div:last-child {
+    margin-bottom: 0px;
+}
+
+#therealsujitk-gifs-container .therealsujitk-gifs-gif-column img:hover {
     border: 2px solid @primary-color;
 }
 
+#therealsujitk-gifs-container .therealsujitk-gifs-suggestion-column div:hover {
+    border: 2px solid @primary-color;
+    background-color: fade(@primary-color, 80%);
+}
+
 #therealsujitk-gifs-container .LoadingIndicator-container {
+    display: none;
     width: 100%;
 }
 
 #therealsujitk-gifs-container .therealsujitk-gifs-end {
-    display: none;
     width: 100%;
     margin: 25px 0px;
     text-align: center;
