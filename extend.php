@@ -25,9 +25,14 @@ return [
     new Extend\Locales(__DIR__ . '/resources/locale'),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
-        ->attribute('therealsujitk-gifs.giphy_api_key', function ($serializer, $model) {
+        ->attribute('therealsujitk-gifs.gif_engine', function ($serializer, $model) {
             $settings = resolve(SettingsRepositoryInterface::class);
 
-            return $settings->get('therealsujitk-gifs.giphy_api_key');
+            return $settings->get('therealsujitk-gifs.gif_engine');
+        })
+        ->attribute('therealsujitk-gifs.api_key', function ($serializer, $model) {
+            $settings = resolve(SettingsRepositoryInterface::class);
+
+            return $settings->get('therealsujitk-gifs.api_key');
         })
 ];

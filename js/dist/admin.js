@@ -101,9 +101,18 @@ __webpack_require__.r(__webpack_exports__);
 
 flarum_common_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializers.add('therealsujitk-gifs', function (app) {
   app.extensionData["for"]('therealsujitk-gifs').registerSetting({
-    setting: 'therealsujitk-gifs.giphy_api_key',
+    setting: 'therealsujitk-gifs.gif_engine',
+    type: 'select',
+    options: {
+      'giphy': 'Giphy',
+      'tenor': 'Tenor'
+    },
+    "default": 'giphy',
+    label: app.translator.trans('therealsujitk.admin.gifs.gifEngine')
+  }).registerSetting({
+    setting: 'therealsujitk-gifs.api_key',
     type: 'text',
-    label: app.translator.trans('therealsujitk.admin.gifs.giphyAPIkey')
+    label: app.translator.trans('therealsujitk.admin.gifs.apiKey')
   });
 });
 

@@ -953,15 +953,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var flarum_common_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! flarum/common/components/LoadingIndicator */ "flarum/common/components/LoadingIndicator");
 /* harmony import */ var flarum_common_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../helpers/Giphy */ "./src/forum/helpers/Giphy.js");
 
 
 
 
 
 
+var GifEngine; // Dynamically imported when the modal is created
 
-var textArea, gifEngine, lastQuery, lastOffset;
+var textArea, lastQuery, lastOffset;
 /*
     Function to append GIFs to the gif columns
  */
@@ -980,7 +980,7 @@ function appendGifs(gifs) {
     columns[i].style.display = 'inline-block';
   }
 
-  for (var i = 0; i < _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getLimit"](); ++i) {
+  for (var i = 0; i < GifEngine.getLimit(); ++i) {
     var img = document.createElement('img'); // If the object is undefined, there are no more results
 
     if (typeof gifs[i] === 'undefined') {
@@ -989,18 +989,20 @@ function appendGifs(gifs) {
       break;
     }
 
-    var gif = function () {
-      if (gifEngine === 'Giphy') {
-        return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["extractGif"](gifs[i]);
-      }
-    }();
-
+    var gif = GifEngine.extractGif(gifs[i]);
     img.src = gif['url'];
     img.alt = gif['title'];
     img.addEventListener('click', function (e) {
-      var embed = '![Giphy - ' + e.target.alt + ']' + '(' + e.target.src + ')';
+      var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
+      var embed = "'![" + gifEngine[0].toUpperCase() + gifEngine.slice(1) + " - " + e.target.alt + "](" + e.target.src + ")";
       textArea.insertAtCursor(embed);
-      app.modal.close();
+      app.modal.close(); // For the Tenor API, it is required to register the shared GIF
+
+      if (gifEngine === 'tenor') {
+        var apiKey = app.forum.attribute('therealsujitk-gifs.api_key');
+        var url = "https://g.tenor.com/v1/registershare?&key=" + apiKey + "&q=" + lastQuery + "&id=" + gif['id'];
+        fetch(url);
+      }
     }); // Currently all screen sizes have 2 columns
 
     columns[i % 2].insertAdjacentElement('beforeend', img);
@@ -1114,22 +1116,29 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
     return m('.Modal-body', {
       oncreate: function () {
         var _oncreate = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee2() {
-          var giphyApiKey, columns, div, gifs, gif, trendingSearches, i;
+          var gifEngine, apiKey, columns, div, gifs, gif, trendingSearches, i;
           return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
                   textArea = _this.attrs.textArea;
-                  gifEngine = 'Giphy';
-                  giphyApiKey = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
-                  _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["setApiKey"](giphyApiKey);
+                  gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
+
+                  if (gifEngine === 'tenor') {
+                    GifEngine = __webpack_require__(/*! ../helpers/Tenor */ "./src/forum/helpers/Tenor.js");
+                  } else {
+                    GifEngine = __webpack_require__(/*! ../helpers/Giphy */ "./src/forum/helpers/Giphy.js");
+                  }
+
+                  apiKey = app.forum.attribute('therealsujitk-gifs.api_key');
+                  GifEngine.setApiKey(apiKey);
                   columns = document.getElementById('therealsujitk-gifs-container').getElementsByClassName('therealsujitk-gifs-suggestion-column');
                   /*
                       Adding the Favourites button
                    */
 
                   div = document.createElement('div');
-                  div.innerHTML = 'Favourites';
+                  div.innerHTML = app.translator.trans('therealsujitk.forum.gifs.favourites');
                   div.addEventListener('click', function () {
                     alert('TBD');
                   });
@@ -1138,78 +1147,72 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
                       Adding the Trending GIFs button
                    */
 
-                  _context2.next = 11;
-                  return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getTrendingGifs"](1);
+                  _context2.next = 12;
+                  return GifEngine.getTrendingGifs(0, 1);
 
-                case 11:
+                case 12:
                   gifs = _context2.sent;
                   div = document.createElement('div');
-
-                  gif = function () {
-                    if (gifEngine === 'Giphy') {
-                      return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["extractGif"](gifs[0]);
-                    }
-                  }();
-
-                  div.innerHTML = 'Trending GIFs';
+                  gif = GifEngine.extractGif(gifs[0]);
+                  div.innerHTML = app.translator.trans('therealsujitk.forum.gifs.trending');
                   div.style.backgroundImage = 'url(' + gif['url'] + ')';
-                  div.addEventListener('click', /*#__PURE__*/Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee() {
-                    var gifs;
-                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.wrap(function _callee$(_context) {
-                      while (1) {
-                        switch (_context.prev = _context.next) {
-                          case 0:
-                            lastOffset = 0;
-                            hideColumns();
-                            clearGifColumns();
-                            changeTitle('Trending GIFs');
-                            showBack();
-                            _context.next = 7;
-                            return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getTrendingGifs"]();
+                  div.addEventListener('click', /*#__PURE__*/function () {
+                    var _ref = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee(e) {
+                      var gifs;
+                      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.wrap(function _callee$(_context) {
+                        while (1) {
+                          switch (_context.prev = _context.next) {
+                            case 0:
+                              lastOffset = 0;
+                              hideColumns();
+                              clearGifColumns();
+                              changeTitle(e.target.innerText);
+                              showBack();
+                              _context.next = 7;
+                              return GifEngine.getTrendingGifs();
 
-                          case 7:
-                            gifs = _context.sent;
-                            appendGifs(gifs);
+                            case 7:
+                              gifs = _context.sent;
+                              appendGifs(gifs);
 
-                          case 9:
-                          case "end":
-                            return _context.stop();
+                            case 9:
+                            case "end":
+                              return _context.stop();
+                          }
                         }
-                      }
-                    }, _callee);
-                  })));
+                      }, _callee);
+                    }));
+
+                    return function (_x) {
+                      return _ref.apply(this, arguments);
+                    };
+                  }());
                   columns[1].insertAdjacentElement('beforeend', div);
                   /*
                       Adding buttons for the trending searches along
                       with the first GIF from each search
                    */
 
-                  _context2.next = 20;
-                  return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getTrendingSearches"]();
+                  _context2.next = 21;
+                  return GifEngine.getTrendingSearches();
 
-                case 20:
+                case 21:
                   trendingSearches = _context2.sent;
                   i = 0;
 
-                case 22:
+                case 23:
                   if (!(i < trendingSearches.length)) {
-                    _context2.next = 35;
+                    _context2.next = 36;
                     break;
                   }
 
-                  _context2.next = 25;
-                  return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getGifs"](trendingSearches[i], 0, 1);
+                  _context2.next = 26;
+                  return GifEngine.getGifs(trendingSearches[i], 0, 1);
 
-                case 25:
+                case 26:
                   gifs = _context2.sent;
                   div = document.createElement('div');
-
-                  gif = function () {
-                    if (gifEngine === 'Giphy') {
-                      return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["extractGif"](gifs[0]);
-                    }
-                  }();
-
+                  gif = GifEngine.extractGif(gifs[0]);
                   div.innerText = trendingSearches[i];
                   div.style.backgroundImage = 'url(' + gif['url'] + ')';
                   div.addEventListener('click', function (e) {
@@ -1219,12 +1222,12 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
 
                   columns[i % 2].insertAdjacentElement('beforeend', div);
 
-                case 32:
+                case 33:
                   ++i;
-                  _context2.next = 22;
+                  _context2.next = 23;
                   break;
 
-                case 35:
+                case 36:
                 case "end":
                   return _context2.stop();
               }
@@ -1256,7 +1259,15 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
       className: 'Search-input'
     }, [m('input', {
       className: 'FormControl',
-      placeholder: app.translator.trans('therealsujitk.forum.gifs.searchGiphy'),
+      placeholder: function () {
+        var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
+
+        if (gifEngine === 'tenor') {
+          return app.translator.trans('therealsujitk.forum.gifs.searchTenor');
+        } else {
+          return app.translator.trans('therealsujitk.forum.gifs.searchGiphy');
+        }
+      }(),
       onkeydown: function onkeydown(e) {
         if (e.key === 'Enter') {
           e.preventDefault(); // To prevent the page from reloading
@@ -1290,7 +1301,7 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
                   clearGifColumns();
                   showBack();
                   _context3.next = 10;
-                  return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getGifs"](lastQuery, lastOffset);
+                  return GifEngine.getGifs(lastQuery, lastOffset);
 
                 case 10:
                   gifs = _context3.sent;
@@ -1333,7 +1344,7 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
                     break;
                   }
 
-                  lastOffset += _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getLimit"]();
+                  lastOffset += GifEngine.getLimit();
                   _context5.next = 6;
                   return Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee4() {
                     var title;
@@ -1354,14 +1365,14 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
                             }
 
                             _context4.next = 5;
-                            return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getTrendingGifs"](lastOffset);
+                            return GifEngine.getTrendingGifs(lastOffset);
 
                           case 5:
                             return _context4.abrupt("return", _context4.sent);
 
                           case 6:
                             _context4.next = 8;
-                            return _helpers_Giphy__WEBPACK_IMPORTED_MODULE_6__["getGifs"](lastQuery, lastOffset);
+                            return GifEngine.getGifs(lastQuery, lastOffset);
 
                           case 8:
                             return _context4.abrupt("return", _context4.sent);
@@ -1408,7 +1419,11 @@ var SearchGIFModal = /*#__PURE__*/function (_Modal) {
     }, app.translator.trans('therealsujitk.forum.gifs.end'))]), m('div', {
       id: 'therealsujitk-gifs-footer'
     }, [m('img', {
-      src: app.forum.attribute('baseUrl') + '/assets/extensions/therealsujitk-gifs/powered_by_giphy.svg'
+      src: function () {
+        var baseUrl = app.forum.attribute('baseUrl');
+        var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine') || 'giphy';
+        return baseUrl + '/assets/extensions/therealsujitk-gifs/powered_by_' + gifEngine + '.svg';
+      }()
     })]));
   };
 
@@ -1604,6 +1619,195 @@ function setApiKey(key) {
 
 function getLimit() {
   return limit;
+}
+
+/***/ }),
+
+/***/ "./src/forum/helpers/Tenor.js":
+/*!************************************!*\
+  !*** ./src/forum/helpers/Tenor.js ***!
+  \************************************/
+/*! exports provided: getTrendingSearches, getTrendingGifs, getGifs, extractGif, setApiKey, getLimit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTrendingSearches", function() { return getTrendingSearches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTrendingGifs", function() { return getTrendingGifs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGifs", function() { return getGifs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extractGif", function() { return extractGif; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setApiKey", function() { return setApiKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLimit", function() { return getLimit; });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var defaultLimit = 20; // The maximum number of gifs per request
+
+var apiKey;
+/*
+    Function to get an array of trending searches
+ */
+
+function getTrendingSearches() {
+  return _getTrendingSearches.apply(this, arguments);
+}
+/*
+    Function to get an object of trending GIFs
+ */
+
+function _getTrendingSearches() {
+  _getTrendingSearches = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee() {
+    var searches, url;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            url = 'https://g.tenor.com/v1/trending_terms?key=' + apiKey;
+            _context.next = 3;
+            return fetch(url).then(function (response) {
+              return response.json();
+            }).then(function (content) {
+              if (typeof content['results'] === 'undefined') {
+                console.error('Sorry, there was something wrong with the Tenor API Key.');
+                return;
+              }
+
+              searches = content['results'];
+            });
+
+          case 3:
+            return _context.abrupt("return", searches);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _getTrendingSearches.apply(this, arguments);
+}
+
+function getTrendingGifs(_x, _x2) {
+  return _getTrendingGifs.apply(this, arguments);
+}
+/*
+    Funciton to get an object of GIFs
+ */
+
+function _getTrendingGifs() {
+  _getTrendingGifs = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee2(pos, limit) {
+    var gifs, url;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            if (pos === void 0) {
+              pos = 0;
+            }
+
+            if (limit === void 0) {
+              limit = 0;
+            }
+
+            url = 'https://g.tenor.com/v1/trending?key=' + apiKey + '&media_filter=minimal' + '&limit=' + (limit != 0 ? limit : defaultLimit) + (pos != 0 ? '&pos=' + pos : '');
+            _context2.next = 5;
+            return fetch(url).then(function (response) {
+              return response.json();
+            }).then(function (content) {
+              if (typeof content['results'] === 'undefined') {
+                console.error('Sorry, there was something wrong with the Tenor API Key.');
+                return;
+              }
+
+              gifs = content['results'];
+            });
+
+          case 5:
+            return _context2.abrupt("return", gifs);
+
+          case 6:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _getTrendingGifs.apply(this, arguments);
+}
+
+function getGifs(_x3, _x4, _x5) {
+  return _getGifs.apply(this, arguments);
+}
+/*
+    Function to extract the url and title from the object
+ */
+
+function _getGifs() {
+  _getGifs = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee3(query, pos, limit) {
+    var gifs, url;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            if (pos === void 0) {
+              pos = 0;
+            }
+
+            if (limit === void 0) {
+              limit = 0;
+            }
+
+            url = 'https://g.tenor.com/v1/search?key=' + apiKey + '&media_filter=minimal' + '&q=' + query + '&limit=' + (limit != 0 ? limit : defaultLimit) + (pos != 0 ? '&pos=' + pos : '');
+            _context3.next = 5;
+            return fetch(url).then(function (response) {
+              return response.json();
+            }).then(function (content) {
+              if (typeof content['results'] === 'undefined') {
+                console.error('Sorry, there was something wrong with the Tenor API Key.');
+                return;
+              }
+
+              gifs = content['results'];
+            });
+
+          case 5:
+            return _context3.abrupt("return", gifs);
+
+          case 6:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _getGifs.apply(this, arguments);
+}
+
+function extractGif(gif) {
+  var gif = {
+    id: gif['id'],
+    title: gif['title'],
+    url: gif['media'][0]['gif']['url']
+  };
+  return gif;
+}
+/*
+    Function to set the Giphy API key
+ */
+
+function setApiKey(key) {
+  apiKey = key;
+  return true;
+}
+/*
+    Function to return the maximum number of gifs per request
+ */
+
+function getLimit() {
+  return defaultLimit;
 }
 
 /***/ }),

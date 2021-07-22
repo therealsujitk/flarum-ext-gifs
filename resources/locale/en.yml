@@ -4,8 +4,12 @@ therealsujitk:
         label: 'Insert GIF'
         title: 'Select GIF'
         searchGiphy: 'Search Giphy'
+        searchTenor: 'Search Tenor'
+        favourites: 'Favourites'
+        trending: 'Trending GIFs'
         search: 'Search'
         end: "You've reached the end"
     admin:
       gifs:
-        giphyAPIkey: 'Giphy API Key'
+        gifEngine: 'GIF Search Engine'
+        apiKey: 'API Key'

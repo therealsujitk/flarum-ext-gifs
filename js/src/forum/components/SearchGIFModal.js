@@ -2,9 +2,9 @@ import Modal from 'flarum/common/components/Modal';
 import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 
-import * as Giphy from '../helpers/Giphy';
+var GifEngine; // Dynamically imported when the modal is created
 
-var textArea, gifEngine, lastQuery, lastOffset;
+var textArea, lastQuery, lastOffset;
 
 /*
     Function to append GIFs to the gif columns
@@ -23,7 +23,7 @@ function appendGifs(gifs) {
         columns[i].style.display = 'inline-block';
     }
 
-    for (var i = 0; i < Giphy.getLimit(); ++i) {
+    for (var i = 0; i < GifEngine.getLimit(); ++i) {
         var img = document.createElement('img');
 
         // If the object is undefined, there are no more results
@@ -34,18 +34,22 @@ function appendGifs(gifs) {
             break;
         }
 
-        var gif = (() => {
-            if (gifEngine === 'Giphy') {
-                return Giphy.extractGif(gifs[i]);
-            }
-        })();
+        var gif = GifEngine.extractGif(gifs[i]);
 
         img.src = gif['url'];
         img.alt = gif['title'];
         img.addEventListener('click', (e) => {
-            var embed = '![Giphy - ' + e.target.alt + ']' + '(' + e.target.src + ')';
+            var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
+            var embed = `'![${gifEngine[0].toUpperCase()}${gifEngine.slice(1)} - ${e.target.alt}](${e.target.src})`;
             textArea.insertAtCursor(embed);
             app.modal.close();
+
+            // For the Tenor API, it is required to register the shared GIF
+            if (gifEngine === 'tenor') {
+                var apiKey = app.forum.attribute('therealsujitk-gifs.api_key');
+                var url = `https://g.tenor.com/v1/registershare?&key=${apiKey}&q=${lastQuery}&id=${gif['id']}`;
+                fetch(url);
+            }
         });
 
         // Currently all screen sizes have 2 columns
@@ -150,10 +154,16 @@ export default class SearchGIFModal extends Modal {
             {
                 oncreate: async () => {
                     textArea = this.attrs.textArea;
-                    gifEngine = 'Giphy';
+                    var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
 
-                    var giphyApiKey = app.forum.attribute('therealsujitk-gifs.giphy_api_key');
-                    Giphy.setApiKey(giphyApiKey);
+                    if (gifEngine === 'tenor') {
+                        GifEngine = require('../helpers/Tenor');
+                    } else {
+                        GifEngine = require('../helpers/Giphy');
+                    }
+
+                    const apiKey = app.forum.attribute('therealsujitk-gifs.api_key');
+                    GifEngine.setApiKey(apiKey);
 
                     var columns = document
                         .getElementById('therealsujitk-gifs-container')
@@ -164,7 +174,7 @@ export default class SearchGIFModal extends Modal {
                      */
                     var div = document.createElement('div');
 
-                    div.innerHTML = 'Favourites';
+                    div.innerHTML = app.translator.trans('therealsujitk.forum.gifs.favourites');
                     div.addEventListener('click', () => {
                         alert('TBD');
                     });
@@ -174,26 +184,22 @@ export default class SearchGIFModal extends Modal {
                     /*
                         Adding the Trending GIFs button
                      */
-                    var gifs = await Giphy.getTrendingGifs(1);
+                    var gifs = await GifEngine.getTrendingGifs(0, 1);
                     var div = document.createElement('div');
 
-                    var gif = (() => {
-                        if (gifEngine === 'Giphy') {
-                            return Giphy.extractGif(gifs[0]);
-                        }
-                    })();
+                    var gif = GifEngine.extractGif(gifs[0]);
 
-                    div.innerHTML = 'Trending GIFs';
+                    div.innerHTML = app.translator.trans('therealsujitk.forum.gifs.trending');
                     div.style.backgroundImage = 'url(' + gif['url'] + ')';
-                    div.addEventListener('click', async () => {
+                    div.addEventListener('click', async (e) => {
                         lastOffset = 0;
 
                         hideColumns();
                         clearGifColumns();
-                        changeTitle('Trending GIFs');
+                        changeTitle(e.target.innerText);
                         showBack();
 
-                        var gifs = await Giphy.getTrendingGifs();
+                        var gifs = await GifEngine.getTrendingGifs();
                         appendGifs(gifs);
                     });
 
@@ -203,17 +209,13 @@ export default class SearchGIFModal extends Modal {
                         Adding buttons for the trending searches along
                         with the first GIF from each search
                      */
-                    var trendingSearches = await Giphy.getTrendingSearches();
+                    var trendingSearches = await GifEngine.getTrendingSearches();
 
                     for (var i = 0; i < trendingSearches.length; ++i) {
-                        var gifs = await Giphy.getGifs(trendingSearches[i], 0, 1);
+                        var gifs = await GifEngine.getGifs(trendingSearches[i], 0, 1);
                         var div = document.createElement('div');
 
-                        var gif = (() => {
-                            if (gifEngine === 'Giphy') {
-                                return Giphy.extractGif(gifs[0]);
-                            }
-                        })();
+                        var gif = GifEngine.extractGif(gifs[0]);
 
                         div.innerText = trendingSearches[i];
                         div.style.backgroundImage = 'url(' + gif['url'] + ')';
@@ -255,7 +257,15 @@ export default class SearchGIFModal extends Modal {
                         [
                             m('input', {
                                 className: 'FormControl',
-                                placeholder: app.translator.trans('therealsujitk.forum.gifs.searchGiphy'),
+                                placeholder: (() => {
+                                    var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine');
+
+                                    if (gifEngine === 'tenor') {
+                                        return app.translator.trans('therealsujitk.forum.gifs.searchTenor');
+                                    } else {
+                                        return app.translator.trans('therealsujitk.forum.gifs.searchGiphy');
+                                    }
+                                })(),
                                 onkeydown: (e) => {
                                     if (e.key === 'Enter') {
                                         e.preventDefault(); // To prevent the page from reloading
@@ -285,7 +295,7 @@ export default class SearchGIFModal extends Modal {
                                 clearGifColumns();
                                 showBack();
 
-                                var gifs = await Giphy.getGifs(lastQuery, lastOffset);
+                                var gifs = await GifEngine.getGifs(lastQuery, lastOffset);
                                 appendGifs(gifs);
                             }
                         },
@@ -309,18 +319,18 @@ export default class SearchGIFModal extends Modal {
                             }
 
                             if (container.scrollTop === container.scrollHeight - container.offsetHeight) {
-                                lastOffset += Giphy.getLimit();
+                                lastOffset += GifEngine.getLimit();
 
                                 var gifs = await (async () => {
                                     var title = document.getElementById('therealsujitk-gifs-title');
 
                                     if (title.style.display != 'none') {
                                         if (title.innerText == 'Trending GIFs') {
-                                            return await Giphy.getTrendingGifs(lastOffset);
+                                            return await GifEngine.getTrendingGifs(lastOffset);
                                         }
                                     }
 
-                                    return await Giphy.getGifs(lastQuery, lastOffset);
+                                    return await GifEngine.getGifs(lastQuery, lastOffset);
                                 })();
 
                                 appendGifs(gifs);
@@ -369,9 +379,11 @@ export default class SearchGIFModal extends Modal {
                 },
                 [
                     m('img', {
-                        src:
-                            app.forum.attribute('baseUrl') +
-                            '/assets/extensions/therealsujitk-gifs/powered_by_giphy.svg'
+                        src: (() => {
+                            var baseUrl = app.forum.attribute('baseUrl');
+                            var gifEngine = app.forum.attribute('therealsujitk-gifs.gif_engine') || 'giphy';
+                            return baseUrl + '/assets/extensions/therealsujitk-gifs/powered_by_' + gifEngine + '.svg';
+                        })()
                     })
                 ]
             )
