@@ -40,7 +40,7 @@ export default class GIFModal extends Modal {
 
         this.homeButtons = new Array();
         this.favouriteButtons = new Array();
-        this.resultButtons = null;
+        this.resultButtons = new Array();
 
         this.loadHomePage();
         this.loadFavouritesPage();
@@ -202,10 +202,6 @@ export default class GIFModal extends Modal {
     async loadTrendingPage() {
         this.showTrending();
 
-        if (this.resultButtons === null) {
-            this.resultButtons = new Array();
-        }
-
         for (var i = 0; i < this.Engine.getLimit(); ++i) {
             var button = {}
             this.resultButtons.push(button);
@@ -219,10 +215,6 @@ export default class GIFModal extends Modal {
     async loadResultsPage() {
         this.showResults();
 
-        if (this.resultButtons === null) {
-            this.resultButtons = new Array();
-        }
-
         for (var i = 0; i < this.Engine.getLimit(); ++i) {
             var button = {}
             this.resultButtons.push(button);
@@ -235,7 +227,7 @@ export default class GIFModal extends Modal {
 
     resetResultsPage() {
         this.$(`.${prefix}-container`).eq(2).animate({scrollTop: 0});
-        this.resultButtons = null;
+        this.resultButtons = new Array();
 
         this.next = null;
         this.loading = false;

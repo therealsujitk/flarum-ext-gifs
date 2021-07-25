@@ -1002,7 +1002,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
     this.favourites = new Set();
     this.homeButtons = new Array();
     this.favouriteButtons = new Array();
-    this.resultButtons = null;
+    this.resultButtons = new Array();
     this.loadHomePage();
     this.loadFavouritesPage();
     this.loading = false;
@@ -1245,10 +1245,6 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
             case 0:
               this.showTrending();
 
-              if (this.resultButtons === null) {
-                this.resultButtons = new Array();
-              }
-
               for (i = 0; i < this.Engine.getLimit(); ++i) {
                 button = {};
                 this.resultButtons.push(button);
@@ -1258,7 +1254,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
               this.injectGIFs(null, startIndex, CATEGORY_TRENDING, null);
               this.loading = false;
 
-            case 6:
+            case 5:
             case "end":
               return _context3.stop();
           }
@@ -1282,10 +1278,6 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
             case 0:
               this.showResults();
 
-              if (this.resultButtons === null) {
-                this.resultButtons = new Array();
-              }
-
               for (i = 0; i < this.Engine.getLimit(); ++i) {
                 button = {};
                 this.resultButtons.push(button);
@@ -1295,7 +1287,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
               this.injectGIFs(this.query(), startIndex, CATEGORY_RESULT, null);
               this.loading = false;
 
-            case 6:
+            case 5:
             case "end":
               return _context4.stop();
           }
@@ -1314,7 +1306,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
     this.$("." + prefix + "-container").eq(2).animate({
       scrollTop: 0
     });
-    this.resultButtons = null;
+    this.resultButtons = new Array();
     this.next = null;
     this.loading = false;
     this.reachedEnd = false;
