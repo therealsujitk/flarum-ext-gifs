@@ -1,108 +1,91 @@
-const defaultLimit = 20; // The maximum number of gifs per request
-var apiKey;
+export function initialize(apiKey) {
+    this.baseUrl = 'https://g.tenor.com/v1';
+    this.defaultLimit = 10;
 
-/*
-    Function to get an array of trending searches
- */
-export async function getTrendingSearches() {
-    var searches;
-    var url = 'https://g.tenor.com/v1/trending_terms?key=' + apiKey;
-
-    await fetch(url)
-        .then((response) => response.json())
-        .then((content) => {
-            if (typeof content['results'] === 'undefined') {
-                console.error('Sorry, there was something wrong with the Tenor API Key.');
-                return;
-            }
-
-            searches = content['results'];
-        });
-
-    return searches;
+    this.apiKey = apiKey;
 }
 
-/*
-    Function to get an object of trending GIFs
- */
-export async function getTrendingGifs(pos = 0, limit = 0) {
-    var gifs;
-
-    var url =
-        'https://g.tenor.com/v1/trending?key=' +
-        apiKey +
-        '&media_filter=minimal' +
-        '&limit=' +
-        (limit != 0 ? limit : defaultLimit) +
-        (pos != 0 ? '&pos=' + pos : '');
+export async function getTrendingTerms() {
+    var terms;
+    var url = `${this.baseUrl}/trending_terms?key=${this.apiKey}`;
 
     await fetch(url)
-        .then((response) => response.json())
-        .then((content) => {
-            if (typeof content['results'] === 'undefined') {
-                console.error('Sorry, there was something wrong with the Tenor API Key.');
-                return;
-            }
+    .then((response) => response.json())
+    .then((content) => {
+        if (typeof content['results'] === 'undefined') {
+            console.error('Sorry, there was something wrong with the Tenor API Key.');
+            return;
+        }
 
-            gifs = content['results'];
-        });
+        terms = content['results'];
+    });
+
+    return terms;
+}
+
+export async function getTrendingGIFs(pos, limit) {
+    var obj;
+    var url = `${this.baseUrl}/trending?key=${this.apiKey}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
+
+    await fetch(url)
+    .then((response) => response.json())
+    .then((content) => {
+        if (typeof content['results'] === 'undefined') {
+            console.error('Sorry, there was something wrong with the Tenor API Key.');
+            return;
+        }
+
+        obj = {
+            gifs: content['results'],
+            next: content['next']
+        };
+    });
+    
+    return obj;
+}
+
+export async function getGIFs(query, pos, limit) {
+    var obj;
+    var url = `${this.baseUrl}/search?key=${this.apiKey}&q=${query}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
+
+    await fetch(url)
+    .then((response) => response.json())
+    .then((content) => {
+        if (typeof content['results'] === 'undefined') {
+            console.error('Sorry, there was something wrong with the Tenor API Key.');
+            return;
+        }
+
+        obj = {
+            gifs: content['results'],
+            next: content['next']
+        };
+    });
+    
+    return obj;
+}
+
+export async function getGIFsByIDs(ids) {
+    var gifs;
+    var url = `${this.baseUrl}/gifs?key=${this.apiKey}&ids=${ids}&media_filter=minimal`;
+
+    await fetch(url)
+    .then((response) => response.json())
+    .then((content) => {
+        gifs = content['results'];
+    });
 
     return gifs;
 }
 
-/*
-    Funciton to get an object of GIFs
- */
-export async function getGifs(query, pos = 0, limit = 0) {
-    var gifs;
-    var url =
-        'https://g.tenor.com/v1/search?key=' +
-        apiKey +
-        '&media_filter=minimal' +
-        '&q=' +
-        query +
-        '&limit=' +
-        (limit != 0 ? limit : defaultLimit) +
-        (pos != 0 ? '&pos=' + pos : '');
-
-    await fetch(url)
-        .then((response) => response.json())
-        .then((content) => {
-            if (typeof content['results'] === 'undefined') {
-                console.error('Sorry, there was something wrong with the Tenor API Key.');
-                return;
-            }
-
-            gifs = content['results'];
-        });
-
-    return gifs;
-}
-
-/*
-    Function to extract the url and title from the object
- */
-export function extractGif(gif) {
-    var gif = {
+export function extractGIF(gif) {
+    return {
         id: gif['id'],
         title: gif['title'],
         url: gif['media'][0]['gif']['url']
     };
-
-    return gif;
 }
 
-/*
-    Function to set the Giphy API key
- */
-export function setApiKey(key) {
-    apiKey = key;
-    return true;
-}
-
-/*
-    Function to return the maximum number of gifs per request
- */
 export function getLimit() {
-    return defaultLimit;
+    return this.defaultLimit;
 }

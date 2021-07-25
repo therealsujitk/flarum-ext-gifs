@@ -96,23 +96,38 @@ module.exports =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/admin */ "./src/admin/index.js");
+/* empty/unused harmony star reexport */
+
+/***/ }),
+
+/***/ "./src/admin/index.js":
+/*!****************************!*\
+  !*** ./src/admin/index.js ***!
+  \****************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_common_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/common/app */ "flarum/common/app");
 /* harmony import */ var flarum_common_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_common_app__WEBPACK_IMPORTED_MODULE_0__);
 
-flarum_common_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializers.add('therealsujitk-gifs', function (app) {
-  app.extensionData["for"]('therealsujitk-gifs').registerSetting({
-    setting: 'therealsujitk-gifs.gif_engine',
+var prefix = 'therealsujitk-gifs';
+flarum_common_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializers.add(prefix, function (app) {
+  app.extensionData["for"](prefix).registerSetting({
+    setting: prefix + ".engine",
     type: 'select',
     options: {
       'giphy': 'Giphy',
       'tenor': 'Tenor'
     },
     "default": 'giphy',
-    label: app.translator.trans('therealsujitk.admin.gifs.gifEngine')
+    label: app.translator.trans(prefix + ".admin.engine")
   }).registerSetting({
-    setting: 'therealsujitk-gifs.api_key',
+    setting: prefix + ".api_key",
     type: 'text',
-    label: app.translator.trans('therealsujitk.admin.gifs.apiKey')
+    label: app.translator.trans(prefix + ".admin.apiKey")
   });
 });
 

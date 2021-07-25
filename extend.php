@@ -25,14 +25,19 @@ return [
     new Extend\Locales(__DIR__ . '/resources/locale'),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
-        ->attribute('therealsujitk-gifs.gif_engine', function ($serializer, $model) {
+        ->attribute('therealsujitk-gifs.engine', function ($serializer, $model) {
             $settings = resolve(SettingsRepositoryInterface::class);
 
-            return $settings->get('therealsujitk-gifs.gif_engine');
+            return $settings->get('therealsujitk-gifs.engine');
         })
         ->attribute('therealsujitk-gifs.api_key', function ($serializer, $model) {
             $settings = resolve(SettingsRepositoryInterface::class);
 
             return $settings->get('therealsujitk-gifs.api_key');
-        })
+        }),
+
+    (new Extend\Routes('api'))
+        ->get('/therealsujitk-gifs', 'therealsujitk-gifs.index', Controllers\ListGIFController::class)
+        ->post('/therealsujitk-gifs', 'therealsujitk-gifs.store', Controllers\AddGIFController::class)
+        ->delete('/therealsujitk-gifs/{id}', 'therealsujitk-gifs.delete', Controllers\RemoveGIFController::class)
 ];

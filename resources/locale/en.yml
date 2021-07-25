@@ -1,15 +1,17 @@
-therealsujitk:
+therealsujitk-gifs:
     forum:
-      gifs:
         label: 'Insert GIF'
-        title: 'Select GIF'
+        title: 'Select a GIF to add to your post'
         searchGiphy: 'Search Giphy'
         searchTenor: 'Search Tenor'
+        search: 'Search'
         favourites: 'Favourites'
         trending: 'Trending GIFs'
-        search: 'Search'
-        end: "You've reached the end"
     admin:
-      gifs:
-        gifEngine: 'GIF Search Engine'
+        engine: 'Search Engine'
         apiKey: 'API Key'
+        rating: 'Content Rating / Content Filter'
+        ratingOff: 'R / Off'
+        ratingLow: 'PG-13 / Low'
+        ratingMedium: 'PG / Medium'
+        ratingHigh: 'G / High'
