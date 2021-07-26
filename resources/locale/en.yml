@@ -7,6 +7,8 @@ therealsujitk-gifs:
         search: 'Search'
         favourites: 'Favourites'
         trending: 'Trending GIFs'
+        addFavourite: 'Add To Favourites'
+        removeFavourite: 'Remove From Favourites'
     admin:
         engine: 'Search Engine'
         apiKey: 'API Key'
