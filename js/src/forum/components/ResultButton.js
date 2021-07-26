@@ -14,6 +14,12 @@ export default class ResultButton extends Component {
         this.rowSpan = Math.random() * 15 + 25;     // The number of rows the button covers (random before loading)
         
         this.id;
+
+        $(window).resize(() => {
+            if (!this.hidden) {
+                this.setRowSpan(this.$('img', this)[0]);
+            }
+        });
     }
 
     view() {
@@ -27,16 +33,17 @@ export default class ResultButton extends Component {
         const onclick = attrs.onclick;
 
         return <div style={this.rowSpan && `grid-row-end: span ${Math.round(this.rowSpan)}`}>
-            <img alt={title} src={url} style={this.hidden ? 'visibility: hidden' : ''} onclick={(e) => {onclick(e, this.id)}} onload={this.setRowSpan.bind(this)} />
+            <img alt={title} src={url} style={this.hidden ? 'visibility: hidden' : ''} onclick={(e) => {onclick(e, this.id)}} onload={(e) => {this.setRowSpan(e.target)}} />
             <Tooltip showOnFocus={false} text={!attrs.isFavourite ? app.translator.trans(`${prefix}.forum.addFavourite`) : app.translator.trans(`${prefix}.forum.removeFavourite`)}>
                 <Button className={`Button Button--icon hasIcon`} style={this.hidden ? 'visibility: hidden' : ''} icon={!this.loading ? (attrs.isFavourite ? 'fas fa-star' : 'far fa-star') : ''} loading={this.loading} onclick={this.handleFavourite.bind(this)} />
             </Tooltip>
         </div>;
     }
 
-    setRowSpan(e) {
-        this.rowSpan = e.target.height / 5 + 2;
+    setRowSpan(img) {
+        this.rowSpan = img.height / 5 + 2;
         this.hidden = false;
+        m.redraw();
     }
 
     async handleFavourite() {

@@ -98,7 +98,7 @@ export default class GIFModal extends Modal {
         if (this.engine === ENGINE_TENOR) {
             return require('../helpers/Tenor');
         } else {
-            return require('../helpers/Giphy')
+            return require('../helpers/Giphy');
         }
     }
 
@@ -203,7 +203,7 @@ export default class GIFModal extends Modal {
         this.showTrending();
 
         for (var i = 0; i < this.Engine.getLimit(); ++i) {
-            var button = {}
+            var button = {};
             this.resultButtons.push(button);
         }
 
@@ -216,7 +216,7 @@ export default class GIFModal extends Modal {
         this.showResults();
 
         for (var i = 0; i < this.Engine.getLimit(); ++i) {
-            var button = {}
+            var button = {};
             this.resultButtons.push(button);
         }
 
@@ -226,11 +226,10 @@ export default class GIFModal extends Modal {
     }
 
     resetResultsPage() {
-        this.$(`.${prefix}-container`).eq(2).animate({scrollTop: 0});
         this.resultButtons = new Array();
+        m.redraw.sync();    // WARNING: Make sure this method is not called during the mithril lifecycle
 
         this.next = null;
-        this.loading = false;
         this.reachedEnd = false;
     }
 
@@ -239,7 +238,10 @@ export default class GIFModal extends Modal {
             return;
         }
 
-        if (e.target.scrollTop >= e.target.scrollHeight - e.target.offsetHeight - 200) {
+        var scrollTop = e.target.scrollTop;
+        var scrollDistance = e.target.scrollHeight - e.target.offsetHeight;
+
+        if (scrollDistance != 0 && scrollTop >= scrollDistance - 200) {
             this.loading = true;
 
             if (this.isResultsVisible) {

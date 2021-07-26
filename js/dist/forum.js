@@ -1305,12 +1305,10 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
   }();
 
   _proto.resetResultsPage = function resetResultsPage() {
-    this.$("." + prefix + "-container").eq(2).animate({
-      scrollTop: 0
-    });
     this.resultButtons = new Array();
+    m.redraw.sync(); // WARNING: Make sure this method is not called during the mithril lifecycle
+
     this.next = null;
-    this.loading = false;
     this.reachedEnd = false;
   };
 
@@ -1319,7 +1317,10 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
       return;
     }
 
-    if (e.target.scrollTop >= e.target.scrollHeight - e.target.offsetHeight - 200) {
+    var scrollTop = e.target.scrollTop;
+    var scrollDistance = e.target.scrollHeight - e.target.offsetHeight;
+
+    if (scrollDistance != 0 && scrollTop >= scrollDistance - 200) {
       this.loading = true;
 
       if (this.isResultsVisible) {
@@ -1651,6 +1652,8 @@ var ResultButton = /*#__PURE__*/function (_Component) {
   var _proto = ResultButton.prototype;
 
   _proto.oninit = function oninit(vnode) {
+    var _this = this;
+
     _Component.prototype.oninit.call(this, vnode);
 
     this.loading = false;
@@ -1659,10 +1662,15 @@ var ResultButton = /*#__PURE__*/function (_Component) {
     this.rowSpan = Math.random() * 15 + 25; // The number of rows the button covers (random before loading)
 
     this.id;
+    $(window).resize(function () {
+      if (!_this.hidden) {
+        _this.setRowSpan(_this.$('img', _this)[0]);
+      }
+    });
   };
 
   _proto.view = function view() {
-    var _this = this;
+    var _this2 = this;
 
     var attrs = this.attrs.attributes;
     this.id = attrs.id;
@@ -1677,9 +1685,11 @@ var ResultButton = /*#__PURE__*/function (_Component) {
       src: url,
       style: this.hidden ? 'visibility: hidden' : '',
       onclick: function onclick(e) {
-        _onclick(e, _this.id);
+        _onclick(e, _this2.id);
       },
-      onload: this.setRowSpan.bind(this)
+      onload: function onload(e) {
+        _this2.setRowSpan(e.target);
+      }
     }), m(flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_6___default.a, {
       showOnFocus: false,
       text: !attrs.isFavourite ? flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.translator.trans(prefix + ".forum.addFavourite") : flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.translator.trans(prefix + ".forum.removeFavourite")
@@ -1692,9 +1702,10 @@ var ResultButton = /*#__PURE__*/function (_Component) {
     })));
   };
 
-  _proto.setRowSpan = function setRowSpan(e) {
-    this.rowSpan = e.target.height / 5 + 2;
+  _proto.setRowSpan = function setRowSpan(img) {
+    this.rowSpan = img.height / 5 + 2;
     this.hidden = false;
+    m.redraw();
   };
 
   _proto.handleFavourite = /*#__PURE__*/function () {
