@@ -196,7 +196,7 @@ export default class GIFModal extends Modal {
             });
 
             gifIDs = gifIDs.slice(0, -1);
-            this.injectGIFs(gifIDs, 0, CATEGORY_FAVOURITE, response.length);
+            response.length && this.injectGIFs(gifIDs, 0, CATEGORY_FAVOURITE, response.length);
         });
     }
 
