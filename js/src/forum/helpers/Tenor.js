@@ -1,8 +1,9 @@
-export function initialize(apiKey) {
+export function initialize(apiKey, rating) {
     this.baseUrl = 'https://g.tenor.com/v1';
     this.defaultLimit = 10;
 
     this.apiKey = apiKey;
+    this.rating = rating;
 }
 
 export async function getTrendingTerms() {
@@ -25,7 +26,7 @@ export async function getTrendingTerms() {
 
 export async function getTrendingGIFs(pos, limit) {
     var obj;
-    var url = `${this.baseUrl}/trending?key=${this.apiKey}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
+    var url = `${this.baseUrl}/trending?key=${this.apiKey}&contentfilter=${this.rating}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
 
     await fetch(url)
     .then((response) => response.json())
@@ -46,7 +47,7 @@ export async function getTrendingGIFs(pos, limit) {
 
 export async function getGIFs(query, pos, limit) {
     var obj;
-    var url = `${this.baseUrl}/search?key=${this.apiKey}&q=${query}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
+    var url = `${this.baseUrl}/search?key=${this.apiKey}&q=${query}&contentfilter=${this.rating}&media_filter=minimal&limit=${limit || this.defaultLimit}${pos ? `&pos=${pos}` : ''}`;
 
     await fetch(url)
     .then((response) => response.json())

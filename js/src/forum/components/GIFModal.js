@@ -3,7 +3,7 @@ import Button from 'flarum/common/components/Button';
 import HomeButton from './HomeButton';
 import Modal from 'flarum/common/components/Modal';
 import ResultButton from './ResultButton';
-import Stream from 'flarum/common/utils/Stream'
+import Stream from 'flarum/common/utils/Stream';
 
 const prefix = 'therealsujitk-gifs';
 
@@ -23,9 +23,10 @@ export default class GIFModal extends Modal {
         this.baseUrl = app.forum.attribute('baseUrl');
         this.engine = app.forum.attribute(`${prefix}.engine`);
         this.apiKey = app.forum.attribute(`${prefix}.api_key`);
+        this.rating = app.forum.attribute(`${prefix}.rating`);
 
         this.Engine = this.getEngine();
-        this.Engine.initialize(this.apiKey);
+        this.Engine.initialize(this.apiKey, this.rating);
 
         this.isHomeVisible = true;
         this.isFavouritesVisible = false;

@@ -1,8 +1,19 @@
-export function initialize(apiKey) {
+export function initialize(apiKey, rating) {
     this.baseUrl = 'https://api.giphy.com/v1';
     this.defaultLimit = 10;
 
     this.apiKey = apiKey;
+    this.rating = (() => {
+        if (rating === 'off') {
+            return 'r';
+        } else if (rating === 'low') {
+            return 'pg-13';
+        } else if (rating === 'medium') {
+            return 'pg';
+        } else {
+            return 'g';
+        }
+    })();
 }
 
 export async function getTrendingTerms() {
@@ -25,7 +36,7 @@ export async function getTrendingTerms() {
 
 export async function getTrendingGIFs(offset, limit) {
     var obj;
-    var url = `${this.baseUrl}/gifs/trending?api_key=${this.apiKey}&limit=${limit || this.defaultLimit}${offset ? `&offset=${offset}` : ''}`;
+    var url = `${this.baseUrl}/gifs/trending?api_key=${this.apiKey}&rating=${this.rating}&limit=${limit || this.defaultLimit}${offset ? `&offset=${offset}` : ''}`;
 
     await fetch(url)
     .then((response) => response.json())
@@ -46,7 +57,7 @@ export async function getTrendingGIFs(offset, limit) {
 
 export async function getGIFs(query, offset, limit) {
     var obj;
-    var url = `${this.baseUrl}/gifs/search?api_key=${this.apiKey}&q=${query}&limit=${limit || this.defaultLimit}${offset ? `&offset=${offset}` : ''}`;
+    var url = `${this.baseUrl}/gifs/search?api_key=${this.apiKey}&rating=${this.rating}&q=${query}&limit=${limit || this.defaultLimit}${offset ? `&offset=${offset}` : ''}`;
 
     await fetch(url)
     .then((response) => response.json())

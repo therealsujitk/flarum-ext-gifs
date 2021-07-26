@@ -990,8 +990,9 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
     this.baseUrl = flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.forum.attribute('baseUrl');
     this.engine = flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.forum.attribute(prefix + ".engine");
     this.apiKey = flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.forum.attribute(prefix + ".api_key");
+    this.rating = flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.forum.attribute(prefix + ".rating");
     this.Engine = this.getEngine();
-    this.Engine.initialize(this.apiKey);
+    this.Engine.initialize(this.apiKey, this.rating);
     this.isHomeVisible = true;
     this.isFavouritesVisible = false;
     this.isTrendingVisible = false;
@@ -1782,10 +1783,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
 
 
-function initialize(apiKey) {
+function initialize(apiKey, rating) {
   this.baseUrl = 'https://api.giphy.com/v1';
   this.defaultLimit = 10;
   this.apiKey = apiKey;
+
+  this.rating = function () {
+    if (rating === 'off') {
+      return 'r';
+    } else if (rating === 'low') {
+      return 'pg-13';
+    } else if (rating === 'medium') {
+      return 'pg';
+    } else {
+      return 'g';
+    }
+  }();
 }
 function getTrendingTerms() {
   return _getTrendingTerms.apply(this, arguments);
@@ -1837,7 +1850,7 @@ function _getTrendingGIFs() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            url = this.baseUrl + "/gifs/trending?api_key=" + this.apiKey + "&limit=" + (limit || this.defaultLimit) + (offset ? "&offset=" + offset : '');
+            url = this.baseUrl + "/gifs/trending?api_key=" + this.apiKey + "&rating=" + this.rating + "&limit=" + (limit || this.defaultLimit) + (offset ? "&offset=" + offset : '');
             _context2.next = 3;
             return fetch(url).then(function (response) {
               return response.json();
@@ -1879,7 +1892,7 @@ function _getGIFs() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            url = this.baseUrl + "/gifs/search?api_key=" + this.apiKey + "&q=" + query + "&limit=" + (limit || this.defaultLimit) + (offset ? "&offset=" + offset : '');
+            url = this.baseUrl + "/gifs/search?api_key=" + this.apiKey + "&rating=" + this.rating + "&q=" + query + "&limit=" + (limit || this.defaultLimit) + (offset ? "&offset=" + offset : '');
             _context3.next = 3;
             return fetch(url).then(function (response) {
               return response.json();
@@ -1974,10 +1987,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
 
 
-function initialize(apiKey) {
+function initialize(apiKey, rating) {
   this.baseUrl = 'https://g.tenor.com/v1';
   this.defaultLimit = 10;
   this.apiKey = apiKey;
+  this.rating = rating;
 }
 function getTrendingTerms() {
   return _getTrendingTerms.apply(this, arguments);
@@ -2027,7 +2041,7 @@ function _getTrendingGIFs() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            url = this.baseUrl + "/trending?key=" + this.apiKey + "&media_filter=minimal&limit=" + (limit || this.defaultLimit) + (pos ? "&pos=" + pos : '');
+            url = this.baseUrl + "/trending?key=" + this.apiKey + "&contentfilter=" + this.rating + "&media_filter=minimal&limit=" + (limit || this.defaultLimit) + (pos ? "&pos=" + pos : '');
             _context2.next = 3;
             return fetch(url).then(function (response) {
               return response.json();
@@ -2067,7 +2081,7 @@ function _getGIFs() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            url = this.baseUrl + "/search?key=" + this.apiKey + "&q=" + query + "&media_filter=minimal&limit=" + (limit || this.defaultLimit) + (pos ? "&pos=" + pos : '');
+            url = this.baseUrl + "/search?key=" + this.apiKey + "&q=" + query + "&contentfilter=" + this.rating + "&media_filter=minimal&limit=" + (limit || this.defaultLimit) + (pos ? "&pos=" + pos : '');
             _context3.next = 3;
             return fetch(url).then(function (response) {
               return response.json();

@@ -18,5 +18,17 @@ app.initializers.add(prefix, (app) => {
             setting: `${prefix}.api_key`,
             type: 'text',
             label: app.translator.trans(`${prefix}.admin.apiKey`)
+        })
+        .registerSetting({
+            setting: `${prefix}.rating`,
+            type: 'select',
+            options: {
+                'off': app.translator.trans(`${prefix}.admin.ratingOff`),
+                'low': app.translator.trans(`${prefix}.admin.ratingLow`),
+                'medium': app.translator.trans(`${prefix}.admin.ratingMedium`),
+                'high': app.translator.trans(`${prefix}.admin.ratingHigh`)
+            },
+            default: 'off',
+            label: app.translator.trans(`${prefix}.admin.rating`)
         });
 });
