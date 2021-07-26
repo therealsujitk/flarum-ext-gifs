@@ -32,6 +32,12 @@ export default class ResultButton extends Component {
         const url = attrs.url;
         const onclick = attrs.onclick;
 
+        if (attrs.isFavourite) {
+            if (!this.hidden) {
+                this.setRowSpan(this.$('img', this)[0]);
+            }
+        }
+
         return <div style={this.rowSpan && `grid-row-end: span ${Math.round(this.rowSpan)}`}>
             <img alt={title} src={url} style={this.hidden ? 'visibility: hidden' : ''} onclick={(e) => {onclick(e, this.id)}} onload={(e) => {this.setRowSpan(e.target)}} />
             <Tooltip showOnFocus={false} text={!attrs.isFavourite ? app.translator.trans(`${prefix}.forum.addFavourite`) : app.translator.trans(`${prefix}.forum.removeFavourite`)}>
@@ -43,7 +49,6 @@ export default class ResultButton extends Component {
     setRowSpan(img) {
         this.rowSpan = img.height / 5 + 2;
         this.hidden = false;
-        m.redraw();
     }
 
     async handleFavourite() {

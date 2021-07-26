@@ -192,7 +192,7 @@ export default class GIFModal extends Modal {
 
                 this.favouriteButtons.push({});
                 this.favourites.add(gifID);
-            })
+            });
 
             gifIDs = gifIDs.slice(0, -1);
             this.injectGIFs(gifIDs, 0, CATEGORY_FAVOURITE, response.length);
@@ -337,7 +337,6 @@ export default class GIFModal extends Modal {
                     await app.store.createRecord(prefix).save({
                         gifID: id
                     }).then(() => {
-                        this.favouriteButtons.unshift({});
                         this.injectGIFs(id, 0, CATEGORY_FAVOURITE, 1);
                         this.favourites.add(id);
 
@@ -351,8 +350,14 @@ export default class GIFModal extends Modal {
             if (category === CATEGORY_HOME) {
                 this.homeButtons[startIndex + i].url = gif.url;
             } else if (category === CATEGORY_FAVOURITE) {
-                Object.assign(this.favouriteButtons[startIndex + i], button);
+                if (this.favouriteButtons[startIndex + i].url === undefined) {
+                    Object.assign(this.favouriteButtons[startIndex + i], button);
+                } else {
+                    // If a new favourite is added, not using a placeholder causes lesser problems
+                    this.favouriteButtons.unshift(button);
+                }
 
+                // Changing the home button background
                 if (startIndex + i == 0) {
                     this.homeButtons[0].url = gif.url;
                 }

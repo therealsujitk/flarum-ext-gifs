@@ -1481,8 +1481,6 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
                           return flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.store.createRecord(prefix).save({
                             gifID: id
                           }).then(function () {
-                            _this4.favouriteButtons.unshift({});
-
                             _this4.injectGIFs(id, 0, CATEGORY_FAVOURITE, 1);
 
                             _this4.favourites.add(id);
@@ -1509,7 +1507,13 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
               if (category === CATEGORY_HOME) {
                 this.homeButtons[startIndex + i].url = gif.url;
               } else if (category === CATEGORY_FAVOURITE) {
-                Object.assign(this.favouriteButtons[startIndex + i], button);
+                if (this.favouriteButtons[startIndex + i].url === undefined) {
+                  Object.assign(this.favouriteButtons[startIndex + i], button);
+                } else {
+                  // If a new favourite is added, not using a placeholder causes lesser problems
+                  this.favouriteButtons.unshift(button);
+                } // Changing the home button background
+
 
                 if (startIndex + i == 0) {
                   this.homeButtons[0].url = gif.url;
@@ -1678,6 +1682,13 @@ var ResultButton = /*#__PURE__*/function (_Component) {
     var title = attrs.title;
     var url = attrs.url;
     var _onclick = attrs.onclick;
+
+    if (attrs.isFavourite) {
+      if (!this.hidden) {
+        this.setRowSpan(this.$('img', this)[0]);
+      }
+    }
+
     return m("div", {
       style: this.rowSpan && "grid-row-end: span " + Math.round(this.rowSpan)
     }, m("img", {
@@ -1705,7 +1716,6 @@ var ResultButton = /*#__PURE__*/function (_Component) {
   _proto.setRowSpan = function setRowSpan(img) {
     this.rowSpan = img.height / 5 + 2;
     this.hidden = false;
-    m.redraw();
   };
 
   _proto.handleFavourite = /*#__PURE__*/function () {
