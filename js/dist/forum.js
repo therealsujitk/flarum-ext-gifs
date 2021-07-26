@@ -2075,12 +2075,12 @@ function _getTrendingTerms() {
             return fetch(url).then(function (response) {
               return response.json();
             }).then(function (content) {
-              if (typeof content['results'] === 'undefined') {
+              if (content.results === undefined) {
                 console.error('Sorry, there was something wrong with the Tenor API Key.');
                 return;
               }
 
-              terms = content['results'];
+              terms = content.results;
             });
 
           case 3:
@@ -2112,14 +2112,14 @@ function _getTrendingGIFs() {
             return fetch(url).then(function (response) {
               return response.json();
             }).then(function (content) {
-              if (typeof content['results'] === 'undefined') {
+              if (content.results === undefined) {
                 console.error('Sorry, there was something wrong with the Tenor API Key.');
                 return;
               }
 
               obj = {
-                gifs: content['results'],
-                next: content['next']
+                gifs: content.results,
+                next: content.next
               };
             });
 
@@ -2152,14 +2152,14 @@ function _getGIFs() {
             return fetch(url).then(function (response) {
               return response.json();
             }).then(function (content) {
-              if (typeof content['results'] === 'undefined') {
+              if (content.results === undefined) {
                 console.error('Sorry, there was something wrong with the Tenor API Key.');
                 return;
               }
 
               obj = {
-                gifs: content['results'],
-                next: content['next']
+                gifs: content.results,
+                next: content.next
               };
             });
 
@@ -2192,7 +2192,7 @@ function _getGIFsByIDs() {
             return fetch(url).then(function (response) {
               return response.json();
             }).then(function (content) {
-              gifs = content['results'];
+              gifs = content.results;
             });
 
           case 3:
@@ -2210,9 +2210,9 @@ function _getGIFsByIDs() {
 
 function extractGIF(gif) {
   return {
-    id: gif['id'],
-    title: gif['title'],
-    url: gif['media'][0]['gif']['url']
+    id: gif.id,
+    title: gif.title,
+    url: gif.media[0].gif.url
   };
 }
 function getLimit() {

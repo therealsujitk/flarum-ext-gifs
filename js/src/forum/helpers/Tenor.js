@@ -12,12 +12,12 @@ export async function getTrendingTerms() {
     await fetch(url)
     .then((response) => response.json())
     .then((content) => {
-        if (typeof content['results'] === 'undefined') {
+        if (content.results === undefined) {
             console.error('Sorry, there was something wrong with the Tenor API Key.');
             return;
         }
 
-        terms = content['results'];
+        terms = content.results;
     });
 
     return terms;
@@ -30,14 +30,14 @@ export async function getTrendingGIFs(pos, limit) {
     await fetch(url)
     .then((response) => response.json())
     .then((content) => {
-        if (typeof content['results'] === 'undefined') {
+        if (content.results === undefined) {
             console.error('Sorry, there was something wrong with the Tenor API Key.');
             return;
         }
 
         obj = {
-            gifs: content['results'],
-            next: content['next']
+            gifs: content.results,
+            next: content.next
         };
     });
     
@@ -51,14 +51,14 @@ export async function getGIFs(query, pos, limit) {
     await fetch(url)
     .then((response) => response.json())
     .then((content) => {
-        if (typeof content['results'] === 'undefined') {
+        if (content.results === undefined) {
             console.error('Sorry, there was something wrong with the Tenor API Key.');
             return;
         }
 
         obj = {
-            gifs: content['results'],
-            next: content['next']
+            gifs: content.results,
+            next: content.next
         };
     });
     
@@ -72,7 +72,7 @@ export async function getGIFsByIDs(ids) {
     await fetch(url)
     .then((response) => response.json())
     .then((content) => {
-        gifs = content['results'];
+        gifs = content.results;
     });
 
     return gifs;
@@ -80,9 +80,9 @@ export async function getGIFsByIDs(ids) {
 
 export function extractGIF(gif) {
     return {
-        id: gif['id'],
-        title: gif['title'],
-        url: gif['media'][0]['gif']['url']
+        id: gif.id,
+        title: gif.title,
+        url: gif.media[0].gif.url
     };
 }
 
