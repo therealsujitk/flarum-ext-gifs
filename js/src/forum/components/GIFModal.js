@@ -78,12 +78,12 @@ export default class GIFModal extends Modal {
                 {this.homeButtons && this.homeButtons.map(homeButton => <HomeButton attributes={homeButton} />)}
             </div>
 
-            <div className={`${prefix}-container`} style={this.isFavouritesVisible ? '' : 'display: none'}>
+            <div className={`${prefix}-container`} style={this.isFavouritesVisible ? '' : 'display: none'} scrollTop={this.isTrendingVisible || this.isResultsVisible ? '0' : ''}>
                 {this.favouriteButtons && this.favouriteButtons.map(favouriteButton => <ResultButton attributes={favouriteButton} />)}
                 <span id={`${prefix}-end`}>You've reached the end</span>
             </div>
 
-            <div className={`${prefix}-container`} style={this.isTrendingVisible || this.isResultsVisible ? '' : 'display: none'} onscroll={this.loadMore.bind(this)}>
+            <div className={`${prefix}-container`} style={this.isTrendingVisible || this.isResultsVisible ? '' : 'display: none'} onscroll={this.loadMore.bind(this)} scrollTop={this.isTrendingVisible || this.isResultsVisible ? '0' : ''}>
                 {this.resultButtons && this.resultButtons.map(resultButton => <ResultButton attributes={resultButton} />)}
                 <span id={`${prefix}-end`}>You've reached the end</span>
             </div>
@@ -276,7 +276,7 @@ export default class GIFModal extends Modal {
             !limit && (this.next = obj.next);
         }
 
-        for (var i = 0; i < this.Engine.getLimit(); ++i) {
+        for (var i = 0; i < (limit || this.Engine.getLimit()); ++i) {
             if (gifs[i] === undefined) {
                 if (category === CATEGORY_FAVOURITE) {
                     this.favouriteButtons.splice(startIndex + i);
@@ -318,7 +318,7 @@ export default class GIFModal extends Modal {
                         url: `${app.forum.attribute('apiUrl')}/${prefix}/${id}`,
                     }).then(() => {
                         var index = this.favouriteButtons.findIndex(
-                            el => el.id = id
+                            el => el.id === id
                         );
                         this.favouriteButtons.splice(index, 1);
                         this.favourites.delete(id);

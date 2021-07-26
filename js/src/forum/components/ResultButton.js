@@ -17,7 +17,7 @@ export default class ResultButton extends Component {
     }
 
     view() {
-        const attrs = this.attrs.attributes || {};
+        const attrs = this.attrs.attributes;
         
         this.id = attrs.id;
         this.favourite = attrs.favourite;

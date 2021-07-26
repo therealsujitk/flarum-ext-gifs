@@ -1066,7 +1066,8 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
       });
     })), m("div", {
       className: prefix + "-container",
-      style: this.isFavouritesVisible ? '' : 'display: none'
+      style: this.isFavouritesVisible ? '' : 'display: none',
+      scrollTop: this.isTrendingVisible || this.isResultsVisible ? '0' : ''
     }, this.favouriteButtons && this.favouriteButtons.map(function (favouriteButton) {
       return m(_ResultButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
         attributes: favouriteButton
@@ -1076,7 +1077,8 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
     }, "You've reached the end")), m("div", {
       className: prefix + "-container",
       style: this.isTrendingVisible || this.isResultsVisible ? '' : 'display: none',
-      onscroll: this.loadMore.bind(this)
+      onscroll: this.loadMore.bind(this),
+      scrollTop: this.isTrendingVisible || this.isResultsVisible ? '0' : ''
     }, this.resultButtons && this.resultButtons.map(function (resultButton) {
       return m(_ResultButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
         attributes: resultButton
@@ -1391,7 +1393,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
               i = 0;
 
             case 20:
-              if (!(i < this.Engine.getLimit())) {
+              if (!(i < (limit || this.Engine.getLimit()))) {
                 _context6.next = 37;
                 break;
               }
@@ -1453,7 +1455,7 @@ var GIFModal = /*#__PURE__*/function (_Modal) {
                             url: flarum_app__WEBPACK_IMPORTED_MODULE_3___default.a.forum.attribute('apiUrl') + "/" + prefix + "/" + id
                           }).then(function () {
                             var index = _this4.favouriteButtons.findIndex(function (el) {
-                              return el.id = id;
+                              return el.id === id;
                             });
 
                             _this4.favouriteButtons.splice(index, 1);
@@ -1660,7 +1662,7 @@ var ResultButton = /*#__PURE__*/function (_Component) {
   _proto.view = function view() {
     var _this = this;
 
-    var attrs = this.attrs.attributes || {};
+    var attrs = this.attrs.attributes;
     this.id = attrs.id;
     this.favourite = attrs.favourite;
     var title = attrs.title;
