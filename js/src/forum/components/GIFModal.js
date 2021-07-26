@@ -285,9 +285,9 @@ export default class GIFModal extends Modal {
                     this.favouriteButtons.splice(startIndex + i);
                 } else if (category === CATEGORY_RESULT) {
                     this.resultButtons.splice(startIndex + i);
+                    this.reachedEnd = true;
                 }
 
-                this.reachedEnd = true;
                 break;
             }
 
@@ -351,7 +351,7 @@ export default class GIFModal extends Modal {
             if (category === CATEGORY_HOME) {
                 this.homeButtons[startIndex + i].url = gif.url;
             } else if (category === CATEGORY_FAVOURITE) {
-                if (this.favouriteButtons[startIndex + i].url === undefined) {
+                if (this.favouriteButtons[startIndex + i] && this.favouriteButtons[startIndex + i].url === undefined) {
                     Object.assign(this.favouriteButtons[startIndex + i], button);
                 } else {
                     // If a new favourite is added, not using a placeholder causes lesser problems
