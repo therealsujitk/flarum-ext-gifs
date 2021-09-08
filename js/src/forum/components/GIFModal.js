@@ -21,9 +21,9 @@ export default class GIFModal extends Modal {
 
         this.textArea = this.attrs.textArea;
         this.baseUrl = app.forum.attribute('baseUrl');
-        this.engine = app.forum.attribute(`${prefix}.engine`);
+        this.engine = app.forum.attribute(`${prefix}.engine`) || 'giphy';
         this.apiKey = app.forum.attribute(`${prefix}.api_key`);
-        this.rating = app.forum.attribute(`${prefix}.rating`);
+        this.rating = app.forum.attribute(`${prefix}.rating`) || 'off';
 
         this.Engine = this.getEngine();
         this.Engine.initialize(this.apiKey, this.rating);
