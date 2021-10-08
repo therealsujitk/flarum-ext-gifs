@@ -9,7 +9,7 @@ therealsujitk-gifs:
         trending: 'Trending GIFs'
         addFavourite: 'Add To Favourites'
         removeFavourite: 'Remove From Favourites'
-        reachedEnd: 'You've reached the end'
+        reachedEnd: 'You have reached the end'
     admin:
         engine: 'Search Engine'
         apiKey: 'API Key'
