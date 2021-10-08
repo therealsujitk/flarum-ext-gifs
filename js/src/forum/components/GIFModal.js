@@ -116,7 +116,7 @@ export default class GIFModal extends Modal {
                 >
                     {this.favouriteButtons &&
                         this.favouriteButtons.map((favouriteButton) => <ResultButton attributes={favouriteButton} />)}
-                    <span id={`${prefix}-end`}>You've reached the end</span>
+                    <span id={`${prefix}-end`}>app.translator.trans(`${prefix}.forum.reachedEnd`)</span>
                 </div>
 
                 <div
@@ -127,7 +127,7 @@ export default class GIFModal extends Modal {
                 >
                     {this.resultButtons &&
                         this.resultButtons.map((resultButton) => <ResultButton attributes={resultButton} />)}
-                    <span id={`${prefix}-end`}>You've reached the end</span>
+                    <span id={`${prefix}-end`}>app.translator.trans(`${prefix}.forum.reachedEnd`)</span>
                 </div>
 
                 <div id={`${prefix}-footer`}>
