@@ -1,16 +1,16 @@
-name: Build JavaScript assets
+name: Flarum Build
 
 on:
-    push:
-        branches:
-            - master
+  push:
+    branches:
+      - master
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@master
-            - uses: flarum/action-build@master
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flarum/action-build@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
