@@ -20,7 +20,7 @@ export default class GIFModal extends Modal {
         super.oninit(vnode);
 
         this.textArea = this.attrs.textArea;
-        this.baseUrl = app.forum.attribute('baseUrl');
+        this.assetsBaseUrl = app.forum.attribute('assetsBaseUrl');
         this.engine = app.forum.attribute(`${prefix}.engine`) || 'giphy';
         this.apiKey = app.forum.attribute(`${prefix}.api_key`);
         this.rating = app.forum.attribute(`${prefix}.rating`) || 'off';
@@ -132,7 +132,7 @@ export default class GIFModal extends Modal {
 
                 <div id={`${prefix}-footer`}>
                     <img
-                        src={`${this.baseUrl}/assets/extensions/therealsujitk-gifs/powered_by_${this.engine}.svg`}
+                        src={`${this.assetsBaseUrl}/extensions/therealsujitk-gifs/powered_by_${this.engine}.svg`}
                     ></img>
                 </div>
             </div>
